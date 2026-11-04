@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+data/
+models/
+*.gguf
+*.safetensors
+.env
+*.key
+secrets/
