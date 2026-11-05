@@ -1,0 +1,21 @@
+learn:
+  - changed-files:
+      - any-glob-to-any-file: ["level-1-learn/**"]
+build:
+  - changed-files:
+      - any-glob-to-any-file: ["level-2-build/**"]
+deep:
+  - changed-files:
+      - any-glob-to-any-file: ["level-3-deep/**"]
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ["tests/**"]
+fanout:
+  - changed-files:
+      - any-glob-to-any-file: ["fanout/**", "PUBLICITY.md"]
+automation:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", "ruff.toml"]
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "README.md", "DOSSIER.md"]

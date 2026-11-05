@@ -86,7 +86,9 @@ def run_checks():
         "partition": {
             "num_params": build.NUM_PARAMS,
             "parts": parts,
-            "covers_each_index_exactly_once": sorted(flat) == list(range(build.NUM_PARAMS)) and len(flat) == len(set(flat)),
+            "covers_each_index_exactly_once": (
+                sorted(flat) == list(range(build.NUM_PARAMS)) and len(flat) == len(set(flat))
+            ),
             "shard_sizes": [len(p) for p in parts],
             "shard_element_sums": shard_sums,
             "shard_sums_total": sum(shard_sums),
@@ -110,7 +112,10 @@ def run_checks():
 def build_report():
     c = run_checks()
     return {
-        "scenario": "Deep prep CPU equivalence check, stdlib only, one process, no GPU, no torch, reusing Build sharding and Learn data-parallel code by import",
+        "scenario": (
+            "Deep prep CPU equivalence check, stdlib only, one process, no GPU, no torch, "
+            "reusing Build sharding and Learn data-parallel code by import"
+        ),
         "level": "Deep PREP only, Deep NOT closed",
         "all_pass": c["all_pass"],
         "gradient_all_reduce_equivalence": {
@@ -124,14 +129,21 @@ def build_report():
         },
         "shard_partition_sums": c["partition"],
         "checkpoint_restart_equality": {
-            "fsdp_restart_max_diff_vs_uninterrupted": c["build_strategies"]["fsdp"]["restart_max_diff_vs_uninterrupted"],
-            "zero_restart_max_diff_vs_uninterrupted": c["build_strategies"]["zero"]["restart_max_diff_vs_uninterrupted"],
+            "fsdp_restart_max_diff_vs_uninterrupted": (
+                c["build_strategies"]["fsdp"]["restart_max_diff_vs_uninterrupted"]
+            ),
+            "zero_restart_max_diff_vs_uninterrupted": (
+                c["build_strategies"]["zero"]["restart_max_diff_vs_uninterrupted"]
+            ),
             "checkpoint_step": 12,
             "total_steps": 30,
         },
         "build_strategies": c["build_strategies"],
         "gpu_numbers_measured": False,
-        "gpu_note": "No GPU number was measured in this check. Scaling, FSDP on GPU, and communication timing on GPU remain unmeasured until the Kaggle run in KAGGLE-RUN.md is executed.",
+        "gpu_note": (
+            "No GPU number was measured in this check. Scaling, FSDP on GPU, and communication "
+            "timing on GPU remain unmeasured until the Kaggle run in KAGGLE-RUN.md is executed."
+        ),
     }
 
 

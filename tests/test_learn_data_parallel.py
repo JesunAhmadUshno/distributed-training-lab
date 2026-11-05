@@ -22,10 +22,18 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-1-learn"))
 from data_parallel import (  # noqa: E402
-    DataParallelError, all_reduce_average, build_dataset,
-    communication_accounting, compute_gradient, compute_loss,
-    imbalance_experiment, max_abs_diff, predict, shard_dataset,
-    train_data_parallel, weighted_average,
+    DataParallelError,
+    all_reduce_average,
+    build_dataset,
+    communication_accounting,
+    compute_gradient,
+    compute_loss,
+    imbalance_experiment,
+    max_abs_diff,
+    predict,
+    shard_dataset,
+    train_data_parallel,
+    weighted_average,
 )
 
 TOL = 1e-9
