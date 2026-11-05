@@ -1,5 +1,6 @@
 """Scaffold smoke test. Checks that the scaffold files exist. Nothing more."""
 import os
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 need = ["README.md", "SPEC.md", "DOSSIER.md", "NOVELTY.md", "LICENSE",
         "level-1-learn/README.md", "level-2-build/README.md", "level-3-deep/README.md"]

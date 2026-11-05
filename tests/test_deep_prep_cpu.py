@@ -53,7 +53,10 @@ class TestDeepPrepCpu(unittest.TestCase):
 
     def test_kaggle_scripts_compile_as_text(self):
         import py_compile
-        for name in ("common.py", "ex1_ddp_correctness.py", "ex2_scaling_1v2.py", "ex3_fsdp_zero.py", "ex4_comm_timing.py"):
+        for name in (
+            "common.py", "ex1_ddp_correctness.py", "ex2_scaling_1v2.py",
+            "ex3_fsdp_zero.py", "ex4_comm_timing.py",
+        ):
             path = os.path.join(ROOT, "level-3-deep", "kaggle", name)
             self.assertTrue(os.path.exists(path), name)
             py_compile.compile(path, doraise=True)

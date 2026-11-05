@@ -1,0 +1,10 @@
+# distributed-training-lab runs on the Python standard library only
+# in CI: the Learn, Build, and Deep prep CPU code, the tests, and the
+# runners use no third-party packages.
+# This file exists so Dependabot pip updates have a manifest to watch.
+# The Kaggle Deep exercises (level-3-deep/kaggle/) import torch on
+# Kaggle (T4 x2), where torch is provided by the Kaggle image. Torch
+# is deliberately not pinned here, because CI never imports those
+# scripts (they are compile-checked as text by the Deep prep tests)
+# and no GPU number is claimed from CI.
+# If a real CI dependency is ever added, it is pinned here.

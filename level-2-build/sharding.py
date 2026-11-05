@@ -39,7 +39,6 @@ then p = p + v. The velocity vector is sharded with the parameters.
 import hashlib
 import json
 import math
-import os
 
 
 class ShardingError(Exception):

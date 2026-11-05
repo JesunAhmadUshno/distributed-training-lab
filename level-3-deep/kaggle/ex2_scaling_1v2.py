@@ -10,9 +10,13 @@ Run: torchrun --nproc_per_node=1 ex2_scaling_1v2.py
      torchrun --nproc_per_node=2 ex2_scaling_1v2.py
 Not run on the Muse VM: syntax-checked with py_compile only.
 """
-import sys, os, time, json
+import json
+import os
+import sys
+import time
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import setup_distributed, tiny_model, synthetic_batch
+from common import setup_distributed, synthetic_batch, tiny_model
 
 
 def main():
@@ -21,23 +25,34 @@ def main():
     torch.manual_seed(1234)
     x, y = synthetic_batch(torch, n=256, device=device)
     model = tiny_model(torch).to(device)
-    ddp = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank] if device.startswith("cuda") else None)
+    ddp = torch.nn.parallel.DistributedDataParallel(
+        model, device_ids=[local_rank] if device.startswith("cuda") else None
+    )
     opt = torch.optim.SGD(ddp.parameters(), lr=0.05)
     loss_fn = torch.nn.MSELoss()
     for _ in range(5):
-        opt.zero_grad(); loss_fn(ddp(x), y).backward(); opt.step()
+        opt.zero_grad()
+        loss_fn(ddp(x), y).backward()
+        opt.step()
     if torch.cuda.is_available():
         torch.cuda.synchronize()
     steps = 50
     start = time.perf_counter()
     for _ in range(steps):
-        opt.zero_grad(); loss_fn(ddp(x), y).backward(); opt.step()
+        opt.zero_grad()
+        loss_fn(ddp(x), y).backward()
+        opt.step()
     if torch.cuda.is_available():
         torch.cuda.synchronize()
     elapsed = time.perf_counter() - start
     if rank == 0:
-        print(json.dumps({"exercise": 2, "backend": backend, "world": world, "steps": steps, "seconds_total": elapsed, "seconds_per_step": elapsed / steps, "examples_per_second_global": steps * 256 * world / elapsed}))
-    dist.barrier(); dist.destroy_process_group()
+        print(json.dumps({
+            "exercise": 2, "backend": backend, "world": world, "steps": steps,
+            "seconds_total": elapsed, "seconds_per_step": elapsed / steps,
+            "examples_per_second_global": steps * 256 * world / elapsed,
+        }))
+    dist.barrier()
+    dist.destroy_process_group()
 
 
 if __name__ == "__main__":
