@@ -13,7 +13,9 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from data_parallel import (  # noqa: E402
-    build_dataset, imbalance_experiment, train_data_parallel,
+    build_dataset,
+    imbalance_experiment,
+    train_data_parallel,
 )
 
 

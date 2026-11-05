@@ -1,0 +1,17 @@
+# Lint scope for this repo (Actions polish pack, 2026-11-05).
+# E: pycodestyle errors, F: pyflakes, I: import order.
+# Level folders and tests load sibling modules by path: each file inserts
+# its folder into sys.path before importing, so those imports carry
+# "# noqa: E402" markers, which are live under this selection.
+# Line length is 120. Ruff fixes in the polish pack were style only:
+# import blocks sorted and wrapped, one unused import (os in
+# level-2-build/sharding.py) removed, over-length lines wrapped, long
+# string literals in level-3-deep/cpu_equivalence.py and the Kaggle
+# exercise 3 note split into concatenated literals with the exact
+# same values, and multi-statement semicolon lines in the Kaggle
+# exercises split into separate statements. No imported name, string
+# value, or behaviour changed: the Deep prep runner reproduced its
+# results file byte-identically after the fixes.
+line-length = 120
+[lint]
+select = ["E", "F", "I"]
