@@ -9,7 +9,11 @@ runs on Kaggle with 2 ranks.
 Run: torchrun --nproc_per_node=2 ex4_comm_timing.py
 Not run on the Muse VM: syntax-checked with py_compile only.
 """
-import sys, os, time, json
+import json
+import os
+import sys
+import time
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import setup_distributed
 
@@ -40,10 +44,14 @@ def main():
                 torch.cuda.synchronize()
             ms = (time.perf_counter() - start) / reps * 1000.0
             mb = numel * 4 / 1e6
-            rows.append({"op": op_name, "numel": numel, "bytes": numel * 4, "ms_per_call": ms, "effective_MB_per_s": mb / (ms / 1000.0) if ms > 0 else None})
+            rows.append({
+                "op": op_name, "numel": numel, "bytes": numel * 4, "ms_per_call": ms,
+                "effective_MB_per_s": mb / (ms / 1000.0) if ms > 0 else None,
+            })
     if rank == 0:
         print(json.dumps({"exercise": 4, "backend": backend, "world": world, "rows": rows}, indent=2))
-    dist.barrier(); dist.destroy_process_group()
+    dist.barrier()
+    dist.destroy_process_group()
 
 
 if __name__ == "__main__":

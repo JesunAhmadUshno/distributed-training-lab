@@ -23,10 +23,19 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 from sharding import (  # noqa: E402
-    NUM_PARAMS, ShardedTrainer, ShardingError, all_gather,
-    build_dataset, communication_accounting, compute_gradient,
-    compute_loss, initial_params, memory_accounting,
-    partition_indices, run_strategy, shard_vector,
+    NUM_PARAMS,
+    ShardedTrainer,
+    ShardingError,
+    all_gather,
+    build_dataset,
+    communication_accounting,
+    compute_gradient,
+    compute_loss,
+    initial_params,
+    memory_accounting,
+    partition_indices,
+    run_strategy,
+    shard_vector,
     train_single_process,
 )
 

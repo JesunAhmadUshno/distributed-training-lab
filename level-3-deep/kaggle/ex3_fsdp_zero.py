@@ -10,9 +10,12 @@ equality are checked inside the run.
 Run: torchrun --nproc_per_node=2 ex3_fsdp_zero.py
 Not run on the Muse VM: syntax-checked with py_compile only.
 """
-import sys, os, json
+import json
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import setup_distributed, tiny_model, synthetic_batch
+from common import setup_distributed, synthetic_batch, tiny_model
 
 
 def main():
@@ -28,7 +31,10 @@ def main():
         model = FSDP(tiny_model(torch).to(device))
         opt = torch.optim.SGD(model.parameters(), lr=0.05)
         for step in range(30):
-            opt.zero_grad(); loss = loss_fn(model(x), y); loss.backward(); opt.step()
+            opt.zero_grad()
+            loss = loss_fn(model(x), y)
+            loss.backward()
+            opt.step()
             if step == 11 and rank == 0:
                 torch.save({"step": 12}, "/tmp/p19_ex3_ckpt.pt")
         final = float(loss) if rank == 0 else None
@@ -39,7 +45,9 @@ def main():
         shard = params[rank::world]
         opt = torch.optim.SGD(shard, lr=0.05)
         for _ in range(30):
-            opt.zero_grad(); loss = loss_fn(model(x), y); loss.backward()
+            opt.zero_grad()
+            loss = loss_fn(model(x), y)
+            loss.backward()
             with torch.no_grad():
                 for p in params:
                     if p.grad is not None:
@@ -48,8 +56,17 @@ def main():
             opt.step()
         final = float(loss) if rank == 0 else None
     if rank == 0:
-        print(json.dumps({"exercise": 3, "backend": backend, "world": world, "path_used": path_used, "final_loss": final, "note": "ZeRO fallback uses gradient all-reduce plus shard-owned optimizer step; full ZeRO partition semantics are the v1.1 remainder if the fallback path is the one that runs"}))
-    dist.barrier(); dist.destroy_process_group()
+        print(json.dumps({
+            "exercise": 3, "backend": backend, "world": world, "path_used": path_used,
+            "final_loss": final,
+            "note": (
+                "ZeRO fallback uses gradient all-reduce plus shard-owned optimizer step; "
+                "full ZeRO partition semantics are the v1.1 remainder if the fallback path "
+                "is the one that runs"
+            ),
+        }))
+    dist.barrier()
+    dist.destroy_process_group()
 
 
 if __name__ == "__main__":
