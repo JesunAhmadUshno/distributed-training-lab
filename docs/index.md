@@ -1,3 +1,7 @@
+---
+title: distributed-training-lab
+---
+
 # distributed-training-lab
 
 Distributed training: DDP, FSDP, and DeepSpeed on the same model, plus a multi-node DDP track on CPU VMs. Built in levels with measured results at each level. The simulated levels are stated plainly as simulations in every level README: no GPU number is claimed from them.
