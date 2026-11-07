@@ -1,7 +1,8 @@
 """Run the Learn scenario and write deterministic results.
 
 Run: python level-1-learn/run_learn.py
-Writes level-1-learn/results_learn.json. No timestamps, no
+Writes level-1-learn/results_learn.json and results_sweep.json
+(the rank sweep and the shard-split sweep from sweeps.py). No timestamps, no
 randomness, no wall clock values, so two runs produce an
 identical file. Simulated ranks in one process: no GPU, no real
 DDP, no network transfer is used or claimed.
@@ -17,6 +18,7 @@ from data_parallel import (  # noqa: E402
     imbalance_experiment,
     train_data_parallel,
 )
+from sweeps import imbalance_sweep, rank_sweep  # noqa: E402
 
 
 def main():
@@ -45,6 +47,18 @@ def main():
         json.dump(out, f, indent=2, sort_keys=True)
         f.write("\n")
     print("Wrote", path)
+    sweep = {"scenario": "rank sweep (1 to 8 simulated ranks, 20 steps, lr 0.05) and "
+                         "every 2-rank shard split at the initial parameters, "
+                         "one process, CPU, no GPU, byte counts are accounting only",
+             "rank_sweep": rank_sweep(data), "imbalance_sweep": imbalance_sweep(data)}
+    for r in sweep["rank_sweep"]:
+        print(f"ranks {r['num_ranks']} shards {r['shard_sizes']}: "
+              f"max_grad_diff={r['max_grad_diff_vs_single_process']}")
+    sweep_path = os.path.join(HERE, "results_sweep.json")
+    with open(sweep_path, "w", encoding="utf-8") as f:
+        json.dump(sweep, f, indent=2, sort_keys=True)
+        f.write("\n")
+    print("Wrote", sweep_path)
     return 0
 
 
