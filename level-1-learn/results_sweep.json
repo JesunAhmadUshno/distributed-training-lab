@@ -1,0 +1,324 @@
+{
+  "imbalance_sweep": [
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -8.571428571428571,
+        -1.7142857142857142,
+        -5.428571428571429
+      ],
+      "naive_max_abs_diff_vs_full": 1.9285714285714288,
+      "shard_sizes": [
+        1,
+        7
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -8.0,
+        -2.0,
+        -4.333333333333334
+      ],
+      "naive_max_abs_diff_vs_full": 2.5,
+      "shard_sizes": [
+        2,
+        6
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -9.066666666666666,
+        -2.6666666666666665,
+        -4.666666666666667
+      ],
+      "naive_max_abs_diff_vs_full": 1.4333333333333336,
+      "shard_sizes": [
+        3,
+        5
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_max_abs_diff_vs_full": 0.0,
+      "shard_sizes": [
+        4,
+        4
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -12.0,
+        -4.0,
+        -5.466666666666667
+      ],
+      "naive_max_abs_diff_vs_full": 1.5,
+      "shard_sizes": [
+        5,
+        3
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -13.333333333333334,
+        -4.666666666666667,
+        -5.666666666666666
+      ],
+      "naive_max_abs_diff_vs_full": 2.833333333333334,
+      "shard_sizes": [
+        6,
+        2
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "full_batch_gradient": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "naive_average": [
+        -21.428571428571427,
+        -6.857142857142857,
+        -8.0
+      ],
+      "naive_max_abs_diff_vs_full": 10.928571428571427,
+      "shard_sizes": [
+        7,
+        1
+      ],
+      "weighted_average": [
+        -10.5,
+        -3.0,
+        -5.0
+      ],
+      "weighted_max_abs_diff_vs_full": 0.0
+    }
+  ],
+  "rank_sweep": [
+    {
+      "all_reduce_bytes_per_step_all_ranks": 12,
+      "equal_shards": true,
+      "final_loss": 0.1043492323477317,
+      "final_params": [
+        1.9956974375752095,
+        -0.5457486568360109,
+        0.5376171025180285
+      ],
+      "final_params_max_diff_vs_one_rank": 0.0,
+      "max_grad_diff_vs_single_process": 0.0,
+      "num_ranks": 1,
+      "shard_sizes": [
+        8
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 24,
+      "equal_shards": true,
+      "final_loss": 0.1043492323477317,
+      "final_params": [
+        1.9956974375752095,
+        -0.5457486568360109,
+        0.5376171025180285
+      ],
+      "final_params_max_diff_vs_one_rank": 0.0,
+      "max_grad_diff_vs_single_process": 8.881784197001252e-16,
+      "num_ranks": 2,
+      "shard_sizes": [
+        4,
+        4
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 36,
+      "equal_shards": false,
+      "final_loss": 0.1069191425578283,
+      "final_params": [
+        2.0000550950319265,
+        -0.5411274609877286,
+        0.5004411454428682
+      ],
+      "final_params_max_diff_vs_one_rank": 0.037175957075160304,
+      "max_grad_diff_vs_single_process": 0.9444444444444446,
+      "num_ranks": 3,
+      "shard_sizes": [
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 48,
+      "equal_shards": true,
+      "final_loss": 0.1043492323477317,
+      "final_params": [
+        1.9956974375752095,
+        -0.5457486568360109,
+        0.5376171025180285
+      ],
+      "final_params_max_diff_vs_one_rank": 0.0,
+      "max_grad_diff_vs_single_process": 2.220446049250313e-16,
+      "num_ranks": 4,
+      "shard_sizes": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 60,
+      "equal_shards": false,
+      "final_loss": 0.10992563144320748,
+      "final_params": [
+        2.0033448242705267,
+        -0.5376393044368643,
+        0.4718166155250624
+      ],
+      "final_params_max_diff_vs_one_rank": 0.06580048699296615,
+      "max_grad_diff_vs_single_process": 1.6999999999999993,
+      "num_ranks": 5,
+      "shard_sizes": [
+        2,
+        2,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 72,
+      "equal_shards": false,
+      "final_loss": 0.10231803951950665,
+      "final_params": [
+        2.026104104240591,
+        -0.5541345810534813,
+        0.43150068939805913
+      ],
+      "final_params_max_diff_vs_one_rank": 0.10611641311996939,
+      "max_grad_diff_vs_single_process": 1.0,
+      "num_ranks": 6,
+      "shard_sizes": [
+        2,
+        2,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 84,
+      "equal_shards": false,
+      "final_loss": 0.09232041319959662,
+      "final_params": [
+        2.021858665467788,
+        -0.5644085348102802,
+        0.49509429552994005
+      ],
+      "final_params_max_diff_vs_one_rank": 0.04252280698808847,
+      "max_grad_diff_vs_single_process": 1.0714285714285712,
+      "num_ranks": 7,
+      "shard_sizes": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "all_reduce_bytes_per_step_all_ranks": 96,
+      "equal_shards": true,
+      "final_loss": 0.1043492323477317,
+      "final_params": [
+        1.9956974375752095,
+        -0.5457486568360109,
+        0.5376171025180285
+      ],
+      "final_params_max_diff_vs_one_rank": 0.0,
+      "max_grad_diff_vs_single_process": 0.0,
+      "num_ranks": 8,
+      "shard_sizes": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "scenario": "rank sweep (1 to 8 simulated ranks, 20 steps, lr 0.05) and every 2-rank shard split at the initial parameters, one process, CPU, no GPU, byte counts are accounting only"
+}
