@@ -9,15 +9,15 @@ restarts both workers, which resume from the last checkpoint. The final
 parameter hash is compared, in analysis, with an uninterrupted launch.
 Usage: torchrun --max-restarts=2 --rdzv-backend=c10d ... e4_fault.py --ckpt DIR [--fault-step N] --out results.jsonl
 """
+
 import argparse
 import hashlib
 import os
 
+import common as c
 import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
-
-import common as c
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--steps", type=int, default=40)
@@ -55,6 +55,18 @@ for step in range(start, a.steps):
         torch.save({"model": model.module.state_dict(), "opt": opt.state_dict(), "step": step + 1}, path)
 stamp = c.env_stamp()
 digest = hashlib.sha256(b"".join(p.detach().float().cpu().numpy().tobytes() for p in model.parameters())).hexdigest()
-c.emit(a.out, {"exp": "E4", "fault_step": a.fault_step, "restart_count": attempt, "resumed_from_step": resumed_from,
-               "steps": a.steps, "checkpoint_every": a.every, "loss_last": loss.item(), "param_sha256": digest, **stamp})
+c.emit(
+    a.out,
+    {
+        "exp": "E4",
+        "fault_step": a.fault_step,
+        "restart_count": attempt,
+        "resumed_from_step": resumed_from,
+        "steps": a.steps,
+        "checkpoint_every": a.every,
+        "loss_last": loss.item(),
+        "param_sha256": digest,
+        **stamp,
+    },
+)
 dist.destroy_process_group()

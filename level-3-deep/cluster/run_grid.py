@@ -4,6 +4,7 @@
   python3 run_grid.py two    ../runs/main.jsonl   (two-node arms, after predictions.json is committed)
 Cells already present in the file are skipped, so an interrupted grid resumes.
 """
+
 import json
 import os
 import random
@@ -25,16 +26,33 @@ if os.path.exists(out):
 for rep in range(REPS):
     order = cells[:]
     random.Random(rep).shuffle(order)
-    util = subprocess.run(["ssh", "spark-31c4", "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader"],
-                          capture_output=True, text=True).stdout.strip()
+    util = subprocess.run(
+        ["ssh", "spark-31c4", "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader"],
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
     with open(out.replace(".jsonl", "-gpu-util.log"), "a") as f:
         f.write(f"phase={phase} rep={rep} node1_gpu_util={util}\n")
     for mode, size, accum in order:
         if (mode, size, accum, rep) in done:
             continue
         steps = ["--warmup", "3", "--steps", "10"] if size == "S" else ["--warmup", "2", "--steps", "5"]
-        args = ["./launch.sh", "1" if mode == "single" else "2", "e3_scale.py", "--mode", mode, "--size", size,
-                "--accum", str(accum), "--rep", str(rep), "--out", out, *steps]
+        args = [
+            "./launch.sh",
+            "1" if mode == "single" else "2",
+            "e3_scale.py",
+            "--mode",
+            mode,
+            "--size",
+            size,
+            "--accum",
+            str(accum),
+            "--rep",
+            str(rep),
+            "--out",
+            out,
+            *steps,
+        ]
         r = subprocess.run(args, capture_output=True, text=True, timeout=900)
         print(f"rep {rep} {mode} {size} k={accum} rc={r.returncode}", flush=True)
         if r.returncode:

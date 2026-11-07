@@ -5,6 +5,7 @@ switch, NCCL over TCP sockets (no InfiniBand / RoCE). Everything a result
 line needs to be traceable is stamped by env_stamp(): hosts, torch, CUDA,
 NCCL, backend, world size, link speed.
 """
+
 import json
 import math
 import os
@@ -27,8 +28,13 @@ SIZES = {"S": (256, 4, 4), "M": (512, 8, 8), "L": (768, 12, 12)}
 def init(backend="nccl"):
     """Join the process group; falls back to a 1-process group when not launched by torchrun."""
     if "RANK" not in os.environ:
-        os.environ.update(RANK="0", WORLD_SIZE="1", LOCAL_RANK="0", MASTER_ADDR="127.0.0.1",
-                          MASTER_PORT=os.environ.get("MASTER_PORT", "29511"))
+        os.environ.update(
+            RANK="0",
+            WORLD_SIZE="1",
+            LOCAL_RANK="0",
+            MASTER_ADDR="127.0.0.1",
+            MASTER_PORT=os.environ.get("MASTER_PORT", "29511"),
+        )
     torch.cuda.set_device(int(os.environ.get("LOCAL_RANK", 0)))
     # P19_PG_TIMEOUT (seconds) bounds how long a rank waits on a dead peer; E4 sets it short
     # so a crashed node is detected in seconds, not the 10-minute default.
@@ -58,10 +64,15 @@ def env_stamp():
     hosts = [None] * dist.get_world_size()
     dist.all_gather_object(hosts, socket.gethostname())
     return {
-        "hosts": hosts, "world_size": dist.get_world_size(), "backend": dist.get_backend(),
-        "torch": torch.__version__, "cuda": torch.version.cuda,
-        "nccl": ".".join(map(str, torch.cuda.nccl.version())), "gpu": torch.cuda.get_device_name(),
-        "link": link_speed(), "date": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "hosts": hosts,
+        "world_size": dist.get_world_size(),
+        "backend": dist.get_backend(),
+        "torch": torch.__version__,
+        "cuda": torch.version.cuda,
+        "nccl": ".".join(map(str, torch.cuda.nccl.version())),
+        "gpu": torch.cuda.get_device_name(),
+        "link": link_speed(),
+        "date": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
     }
 
 
@@ -123,7 +134,7 @@ def batch(step, shard, micro, seed=1234, device="cuda"):
     shift = torch.randint(1, 64, (1,), generator=torch.Generator().manual_seed(seed)).item()
     start = torch.randint(0, VOCAB, (micro, 1), generator=g)
     noise = torch.randint(0, 8, (micro, SEQ), generator=g)
-    seq = (start + torch.arange(SEQ + 1)[: SEQ].mul(shift) + noise) % VOCAB
+    seq = (start + torch.arange(SEQ + 1)[:SEQ].mul(shift) + noise) % VOCAB
     nxt = (seq + shift) % VOCAB
     return seq.to(device), nxt.to(device)
 
@@ -133,5 +144,6 @@ def loss_fn(model, x, y):
 
 
 def max_param_diff(a, b):
-    return max((pa.detach().float() - pb.detach().float()).abs().max().item()
-               for pa, pb in zip(a.parameters(), b.parameters()))
+    return max(
+        (pa.detach().float() - pb.detach().float()).abs().max().item() for pa, pb in zip(a.parameters(), b.parameters())
+    )

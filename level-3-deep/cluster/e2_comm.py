@@ -5,13 +5,13 @@ before and a CUDA synchronise after each one. Every trial time is kept;
 analysis.py fits t(S) = alpha + S / beta and bootstraps the fit.
 Usage: torchrun ... e2_comm.py --out results.jsonl
 """
+
 import argparse
 import time
 
+import common as c
 import torch
 import torch.distributed as dist
-
-import common as c
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--out", required=True)

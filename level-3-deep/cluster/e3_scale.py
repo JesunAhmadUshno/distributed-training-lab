@@ -12,15 +12,15 @@ Every timed step is kept (CUDA-synchronised wall time). Peak allocated
 memory is reported per rank.
 Usage: torchrun ... e3_scale.py --mode M --size S --accum K --rep R --out results.jsonl
 """
+
 import argparse
 import contextlib
 import time
 
+import common as c
 import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
-
-import common as c
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--mode", choices=["single", "ddp", "ddp_bf16", "fsdp"], required=True)
@@ -43,9 +43,11 @@ if a.mode in ("ddp", "ddp_bf16"):
     model = DDP(model)
     if a.mode == "ddp_bf16":
         from torch.distributed.algorithms.ddp_comm_hooks import default_hooks
+
         model.register_comm_hook(None, default_hooks.bf16_compress_hook)
 elif a.mode == "fsdp":
     from torch.distributed.fsdp import fully_shard
+
     for b in model.blocks:
         fully_shard(b)
     fully_shard(model)
@@ -63,7 +65,7 @@ for step in range(a.warmup + a.steps):
         x, y = c.batch(step, shard, a.micro)
         last = m == local_micro - 1
         sync_off = a.mode in ("ddp", "ddp_bf16") and not last
-        with (model.no_sync() if sync_off else contextlib.nullcontext()):
+        with model.no_sync() if sync_off else contextlib.nullcontext():
             if a.mode == "fsdp":
                 model.set_requires_gradient_sync(last)
             loss = c.loss_fn(model, x, y) / local_micro
@@ -79,8 +81,23 @@ dist.all_gather(peaks, peak)
 t = torch.tensor(times, device="cuda")
 dist.all_reduce(t, op=dist.ReduceOp.MAX)
 stamp = c.env_stamp()
-c.emit(a.out, {"exp": "E3", "mode": a.mode, "size": a.size, "params": params, "micro": a.micro, "seq": c.SEQ,
-               "accum": a.accum, "global_micro_batches": 2 * a.accum, "rep": a.rep,
-               "tokens_per_step": 2 * a.accum * a.micro * c.SEQ, "step_seconds": t.tolist(),
-               "peak_mib_per_rank": [p.item() for p in peaks], "loss_last": losses[-1], **stamp})
+c.emit(
+    a.out,
+    {
+        "exp": "E3",
+        "mode": a.mode,
+        "size": a.size,
+        "params": params,
+        "micro": a.micro,
+        "seq": c.SEQ,
+        "accum": a.accum,
+        "global_micro_batches": 2 * a.accum,
+        "rep": a.rep,
+        "tokens_per_step": 2 * a.accum * a.micro * c.SEQ,
+        "step_seconds": t.tolist(),
+        "peak_mib_per_rank": [p.item() for p in peaks],
+        "loss_last": losses[-1],
+        **stamp,
+    },
+)
 dist.destroy_process_group()

@@ -1,4 +1,5 @@
 """Known-answer tests for analysis.py (standard library only). Run: python3 -m unittest test_analysis -v"""
+
 import math
 import unittest
 
@@ -13,8 +14,10 @@ class T(unittest.TestCase):
         self.assertAlmostEqual(r2, 1)
 
     def test_link_fit_recovers_alpha_beta(self):
-        rows = [{"exp": "E2", "op": "all_reduce", "bytes": s, "seconds": [0.001 + s / 100e6] * 3}
-                for s in (4096, 2**20, 2**24, 2**28)]
+        rows = [
+            {"exp": "E2", "op": "all_reduce", "bytes": s, "seconds": [0.001 + s / 100e6] * 3}
+            for s in (4096, 2**20, 2**24, 2**28)
+        ]
         f = A.link_fit(rows)
         self.assertAlmostEqual(f["alpha_s"], 0.001, places=9)
         self.assertAlmostEqual(f["beta_MBps"], 100, places=6)
@@ -35,8 +38,20 @@ class T(unittest.TestCase):
         self.assertTrue(ci[0] <= v <= ci[1])
 
     def test_predict_matches_hand_calculation(self):
-        rows = [{"exp": "E2", "op": "all_reduce", "bytes": s, "seconds": [0.002 + s / 110e6] * 2} for s in (4096, 2**26)]
-        rows += [{"exp": "E3", "mode": "single", "size": "L", "accum": 1, "rep": 0, "params": 2**24, "step_seconds": [0.4] * 5}]
+        rows = [
+            {"exp": "E2", "op": "all_reduce", "bytes": s, "seconds": [0.002 + s / 110e6] * 2} for s in (4096, 2**26)
+        ]
+        rows += [
+            {
+                "exp": "E3",
+                "mode": "single",
+                "size": "L",
+                "accum": 1,
+                "rep": 0,
+                "params": 2**24,
+                "step_seconds": [0.4] * 5,
+            }
+        ]
         c = A.predict(rows)["cells"]["L-1"]
         comm = math.ceil(4 * 2**24 / A.BUCKET) * 0.002 + 4 * 2**24 / 110e6
         self.assertAlmostEqual(c["pred_t_ddp"], 0.2 + comm, places=6)

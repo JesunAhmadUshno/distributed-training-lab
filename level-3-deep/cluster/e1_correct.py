@@ -8,14 +8,14 @@ A SHA-256 of the final parameters lets two separate launches be compared
 for run-to-run determinism.
 Usage: torchrun ... e1_correct.py --mode ddp|fsdp --out results.jsonl
 """
+
 import argparse
 import hashlib
 
+import common as c
 import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
-
-import common as c
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--mode", choices=["ddp", "fsdp"], required=True)
@@ -33,6 +33,7 @@ if a.mode == "ddp":
     model = DDP(model)
 else:
     from torch.distributed.fsdp import fully_shard
+
     for b in model.blocks:
         fully_shard(b)
     fully_shard(model)
@@ -66,9 +67,22 @@ if rank == 0:
         ref_losses.append(loss.item())
     diff = max((f.float() - r.detach().float()).abs().max().item() for f, r in zip(full, ref.parameters()))
     digest = hashlib.sha256(b"".join(f.float().cpu().numpy().tobytes() for f in full)).hexdigest()
-    c.emit(a.out, {"exp": "E1", "mode": a.mode, "size": a.size, "params": c.n_params(ref), "steps": a.steps,
-                   "micro_per_rank": a.micro, "max_param_diff_vs_single": diff,
-                   "max_loss_diff_vs_single": max(abs(p - q) for p, q in zip(losses, ref_losses)),
-                   "loss_first": losses[0], "loss_last": losses[-1], "param_sha256": digest, **stamp})
+    c.emit(
+        a.out,
+        {
+            "exp": "E1",
+            "mode": a.mode,
+            "size": a.size,
+            "params": c.n_params(ref),
+            "steps": a.steps,
+            "micro_per_rank": a.micro,
+            "max_param_diff_vs_single": diff,
+            "max_loss_diff_vs_single": max(abs(p - q) for p, q in zip(losses, ref_losses)),
+            "loss_first": losses[0],
+            "loss_last": losses[-1],
+            "param_sha256": digest,
+            **stamp,
+        },
+    )
 dist.barrier()
 dist.destroy_process_group()
