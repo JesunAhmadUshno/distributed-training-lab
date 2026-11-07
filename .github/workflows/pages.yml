@@ -1,11 +1,11 @@
-name: Deploy docs to GitHub Pages
+name: Pages
 
+# Builds the live dashboard in site/ from the committed level-*/results*.json files and publishes it to GitHub Pages.
+# This replaces the earlier Jekyll build of docs/: docs/index.md stays in the repo but is no longer served.
 on:
   push:
     branches: [main]
-    paths:
-      - "docs/**"
-      - ".github/workflows/pages.yml"
+    paths: ['site/**', 'level-*/results*.json', 'tests/**', 'level-3-deep/kaggle/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -15,22 +15,32 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+  deploy:
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./docs
-          destination: ./_site
-      - uses: actions/upload-pages-artifact@v3
       - id: deployment
         uses: actions/deploy-pages@v4
