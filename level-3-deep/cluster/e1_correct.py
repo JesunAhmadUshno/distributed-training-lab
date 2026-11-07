@@ -50,7 +50,7 @@ for step in range(a.steps):
 
 stamp = c.env_stamp()  # collective: every rank must call it
 # Full parameters on every rank (FSDP holds DTensor shards).
-full = [p.full_tensor() if hasattr(p, "full_tensor") else p.detach() for p in model.parameters()]
+full = [(p.full_tensor() if hasattr(p, "full_tensor") else p).detach() for p in model.parameters()]
 
 if rank == 0:
     c.deterministic(7)

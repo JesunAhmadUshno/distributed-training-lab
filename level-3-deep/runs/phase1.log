@@ -1,0 +1,108 @@
+{"backend": "nccl", "cuda": "13.0", "date": "2026-11-07T16:11:42-0500", "exp": "E1", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_first": 8.471315383911133, "loss_last": 8.061397552490234, "max_loss_diff_vs_single": 0.0, "max_param_diff_vs_single": 0.0, "micro_per_rank": 4, "mode": "ddp", "nccl": "2.29.7", "param_sha256": "443841a6f4a30c94ac363d50c1fe1935c53157aa9e43a32f588f3980a5cfd877", "params": 5322240, "size": "S", "steps": 30, "torch": "2.12.0+cu130", "world_size": 2}
+/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+node0 rc=0 node1 rc=0
+{"backend": "nccl", "cuda": "13.0", "date": "2026-11-07T16:11:53-0500", "exp": "E1", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_first": 8.471315383911133, "loss_last": 8.061397552490234, "max_loss_diff_vs_single": 0.0, "max_param_diff_vs_single": 0.0, "micro_per_rank": 4, "mode": "ddp", "nccl": "2.29.7", "param_sha256": "443841a6f4a30c94ac363d50c1fe1935c53157aa9e43a32f588f3980a5cfd877", "params": 5322240, "size": "S", "steps": 30, "torch": "2.12.0+cu130", "world_size": 2}
+/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+node0 rc=0 node1 rc=0
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/galleaai-nvidiadgxspark2/dev/portfolio/distributed-training-lab/level-3-deep/cluster/e1_correct.py", line 68, in <module>
+[rank0]:     digest = hashlib.sha256(b"".join(f.float().cpu().numpy().tobytes() for f in full)).hexdigest()
+[rank0]:                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/galleaai-nvidiadgxspark2/dev/portfolio/distributed-training-lab/level-3-deep/cluster/e1_correct.py", line 68, in <genexpr>
+[rank0]:     digest = hashlib.sha256(b"".join(f.float().cpu().numpy().tobytes() for f in full)).hexdigest()
+[rank0]:                                      ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: RuntimeError: Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.
+E1107 16:12:07.943000 3298596 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: 1) local_rank: 0 (pid: 3298635) of binary: /usr/bin/python3
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/run.py", line 1020, in <module>
+    main()
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/run.py", line 1016, in main
+    run(args)
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/run.py", line 1007, in run
+    elastic_launch(
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 191, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 371, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+e1_correct.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-07_16:12:07
+  host      : localhost
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3298635) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+node0 rc=1 node1 rc=1
+/home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+{"backend": "nccl", "bytes": 4096, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.0005616489797830582, 0.0007549491710960865, 0.0007957806810736656, 0.0007647080346941948, 0.0008442769758403301, 0.0009611258283257484, 0.0004565468989312649, 0.00042539462447166443, 0.00039333105087280273, 0.0010489178821444511, 0.0005902121774852276, 0.0008045961149036884, 0.00031641824170947075, 0.0007761940360069275, 0.0004911227151751518, 0.0004601632244884968, 0.00047867512330412865, 0.0004571857862174511, 0.0004532020539045334, 0.00045588985085487366], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 16384, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.00036161812022328377, 0.0003905128687620163, 0.0008434453047811985, 0.0006516678258776665, 0.0007728361524641514, 0.0005276990123093128, 0.00038884999230504036, 0.0004215543158352375, 0.0008303248323500156, 0.0006451243534684181, 0.0007194760255515575, 0.0005838901270180941, 0.0007033641450107098, 0.0006483709439635277, 0.0007487721741199493, 0.000604609027504921, 0.0008166609331965446, 0.0010272548533976078, 0.0010358141735196114, 0.0003658737987279892], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 65536, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.0010361820459365845, 0.0007869810797274113, 0.001107590738683939, 0.0008314610458910465, 0.0008590449579060078, 0.0006758281961083412, 0.0008003572002053261, 0.0007566292770206928, 0.0007668039761483669, 0.001019863411784172, 0.0007720678113400936, 0.0007533971220254898, 0.0010604378767311573, 0.0007957480847835541, 0.0006850119680166245, 0.0007335219997912645, 0.0007132519967854023, 0.0008671730756759644, 0.0008524530567228794, 0.00114743085578084], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 262144, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.0023716138675808907, 0.0027454239316284657, 0.0026065921410918236, 0.0027130399830639362, 0.0023580780252814293, 0.0026916316710412502, 0.00275396928191185, 0.002679792232811451, 0.00290694460272789, 0.0025621592067182064, 0.0024581593461334705, 0.0023940298706293106, 0.002449535299092531, 0.002400253899395466, 0.0024413112550973892, 0.0023818216286599636, 0.002455118577927351, 0.002398557960987091, 0.0024562226608395576, 0.002396895084530115], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 1048576, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.009501800872385502, 0.009210405871272087, 0.009209525771439075, 0.009061621502041817, 0.009203143417835236, 0.009093733504414558, 0.009428264573216438, 0.009095797315239906, 0.009154166094958782, 0.009091254323720932, 0.009174887090921402, 0.009089093655347824, 0.009189574979245663, 0.009317336603999138, 0.009341752156615257, 0.009189333766698837, 0.009060918353497982, 0.009183494374155998, 0.00907592661678791, 0.009182293899357319], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 4194304, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.03587502986192703, 0.036095429211854935, 0.03609960526227951, 0.03602925315499306, 0.03624811768531799, 0.03619418293237686, 0.03590165451169014, 0.03601878881454468], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 16777216, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.14308138191699982, 0.1431458443403244, 0.1436629295349121, 0.1434028148651123, 0.1433814913034439, 0.14368189871311188, 0.14352688193321228, 0.14340130984783173], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 67108864, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [0.5716884136199951, 0.5720140337944031, 0.5718485116958618, 0.5716521739959717, 0.5718900561332703], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 268435456, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "all_reduce", "seconds": [2.2862422466278076, 2.2863667011260986, 2.2860195636749268, 2.2862160205841064, 2.2860701084136963], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 4096, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [2.3679807782173157e-05, 2.3744069039821625e-05, 0.00047641689889132977, 5.260785110294819e-05, 2.8032111003994942e-05, 2.2240914404392242e-05, 2.8064008802175522e-05, 2.108793705701828e-05, 2.183998003602028e-05, 0.0002282559871673584, 2.1872110664844513e-05, 2.296105958521366e-05, 5.014403723180294e-05, 0.00020023994147777557, 0.00015320000238716602, 2.2111926227808e-05, 2.3120082914829254e-05, 5.512009374797344e-05, 2.2351974621415138e-05, 3.0128052458167076e-05], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 16384, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [7.4705109000206e-05, 5.1215989515185356e-05, 7.750396616756916e-05, 0.00012043304741382599, 0.00017193611711263657, 0.0001488639973104, 5.628797225654125e-05, 5.745585076510906e-05, 0.0001926880795508623, 7.894518785178661e-05, 5.147187039256096e-05, 5.343998782336712e-05, 0.0003964649513363838, 0.0001471519935876131, 0.00012766406871378422, 0.00023249606601893902, 0.00023089605383574963, 0.0002553120721131563, 0.00026631983928382397, 5.774502642452717e-05], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 65536, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.000506353098899126, 0.00020921602845191956, 0.0004943849053233862, 0.000582417007535696, 0.0004705931060016155, 0.00048043392598629, 0.00046940892934799194, 0.0005615369882434607, 0.0004004649817943573, 0.0004836979787796736, 0.0005167699418962002, 0.0004603690467774868, 0.00022635306231677532, 0.0005635540001094341, 0.0005592501256614923, 0.0004283050075173378, 0.00030094385147094727, 0.000585248926654458, 0.00046748900786042213, 0.0004567371215671301], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 262144, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.002249525859951973, 0.0018992358818650246, 0.0022726929746568203, 0.002252821112051606, 0.002176772803068161, 0.0022475409787148237, 0.0019163410179316998, 0.0022205819841474295, 0.0019045011140406132, 0.002138084964826703, 0.0019522449001669884, 0.002093109069392085, 0.0018991411197930574, 0.0021708859130740166, 0.0021952050738036633, 0.0019641490653157234, 0.002241140929982066, 0.0018828208558261395, 0.00216355687007308, 0.002171733882278204], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 1048576, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.00885995663702488, 0.008867236785590649, 0.008971158415079117, 0.008808293379843235, 0.00856994092464447, 0.008859941735863686, 0.008965910412371159, 0.008817316964268684, 0.008947924710810184, 0.008948436938226223, 0.008969397284090519, 0.008951349183917046, 0.008868533186614513, 0.008941620588302612, 0.008856517262756824, 0.00896546058356762, 0.008851764723658562, 0.008951636962592602, 0.008940773084759712, 0.008629539981484413], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 4194304, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.035694949328899384, 0.03558791056275368, 0.03557421267032623, 0.035587284713983536, 0.03562086820602417, 0.035617396235466, 0.035555653274059296, 0.03568592667579651], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 16777216, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.14227136969566345, 0.14262688159942627, 0.14262115955352783, 0.14262232184410095, 0.14257928729057312, 0.1426393687725067, 0.14263129234313965, 0.14226678013801575], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 67108864, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [0.5703399181365967, 0.5703662037849426, 0.5702284574508667, 0.5702449679374695, 0.5701805949211121], "torch": "2.12.0+cu130", "world_size": 2}
+{"backend": "nccl", "bytes": 268435456, "cuda": "13.0", "date": "2026-11-07T16:13:57-0500", "exp": "E2", "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "nccl": "2.29.7", "op": "broadcast", "seconds": [2.2808117866516113, 2.281096935272217, 2.2810301780700684, 2.2815101146698, 2.281259536743164], "torch": "2.12.0+cu130", "world_size": 2}
+node0 rc=0 node1 rc=0
+rep 0 single S k=4 rc=0
+rep 0 single L k=4 rc=0
+rep 0 single L k=1 rc=0
+rep 0 single M k=4 rc=0
+rep 0 single L k=16 rc=0
+rep 0 single S k=16 rc=0
+rep 0 single S k=64 rc=0
+rep 0 single M k=64 rc=0
+rep 0 single M k=1 rc=0
+rep 0 single S k=1 rc=0
+rep 0 single L k=64 rc=0
+rep 0 single M k=16 rc=0
+rep 1 single M k=64 rc=0
+rep 1 single L k=64 rc=0
+rep 1 single S k=1 rc=0
+rep 1 single L k=1 rc=0
+rep 1 single M k=4 rc=0
+rep 1 single M k=16 rc=0
+rep 1 single S k=64 rc=0
+rep 1 single L k=16 rc=0
+rep 1 single M k=1 rc=0
+rep 1 single S k=4 rc=0
+rep 1 single L k=4 rc=0
+rep 1 single S k=16 rc=0
+rep 2 single L k=4 rc=0
+rep 2 single L k=64 rc=0
+rep 2 single S k=64 rc=0
+rep 2 single M k=1 rc=0
+rep 2 single M k=64 rc=0
+rep 2 single M k=16 rc=0
+rep 2 single L k=1 rc=0
+rep 2 single S k=16 rc=0
+rep 2 single M k=4 rc=0
+rep 2 single L k=16 rc=0
+rep 2 single S k=4 rc=0
+rep 2 single S k=1 rc=0
