@@ -1,8 +1,10 @@
 # distributed-training-lab
 
+Live dashboard: https://jesunahmadushno.github.io/distributed-training-lab/ (the trainers run in your browser as JavaScript ports of the Python below, checked against the committed results files at build time).
+
 Distributed training: DDP, FSDP, and DeepSpeed on the same model, plus a multi-node DDP track on CPU VMs. The GPU scaling table at Deep level stays parked until a free multi-GPU route exists.
 
-Status: Learn DONE (2026-11-05). Build DONE (2026-11-05). Deep not started. Learn is a simulated data-parallel run in one process: no real DDP, no GPU claim. Build is a simulated parameter-sharding run in one process (FSDP-class and ZeRO-class strategies with checkpoint save and restart): no real FSDP or DeepSpeed libraries, no GPU claim, NEEDS-BLACKBOX-ON for the GPU route. Deep is defined by Addendum B as the 2-GPU Kaggle exercise set, honestly labelled; the 4-GPU scope is the parked v1.1 remainder.
+Status: Learn DONE (2026-11-05). Build DONE (2026-11-05). Deep: prep package ready, NOT closed (no GPU run yet). Learn is a simulated data-parallel run in one process: no real DDP, no GPU claim. Build is a simulated parameter-sharding run in one process (FSDP-class and ZeRO-class strategies with checkpoint save and restart): no real FSDP or DeepSpeed libraries, no GPU claim, NEEDS-BLACKBOX-ON for the GPU route. Deep is defined by Addendum B as the 2-GPU Kaggle exercise set, honestly labelled; the 4-GPU scope is the parked v1.1 remainder.
 Project: P19. Fleet node: BlackBox (GPU). Wave: Wave 4 (Learn and Build).
 
 ## Start here
@@ -16,7 +18,7 @@ Project: P19. Fleet node: BlackBox (GPU). Wave: Wave 4 (Learn and Build).
 
 - Level 1, Learn: DONE (2026-11-05). Simulated data-parallel training of a 3-parameter linear model by 2 simulated ranks in one process, with all-reduce gradient averaging proven equal to the single-process gradient, replica consistency verified, shard imbalance measured, and communication volume accounted in code. See level-1-learn/README.md.
 - Level 2, Build: DONE (2026-11-05). Simulated parameter-sharded training of a 31-parameter 2-layer MLP by 2 simulated ranks in one process, under FSDP-class and ZeRO-class strategies on the same model and data, with checkpoint save at step 12 of 30 and restart proven identical to the uninterrupted run, plus communication and memory accounting in code. See level-2-build/README.md.
-- Level 3, Deep: benchmarks, optimization, evaluation, hard cases.
+- Level 3, Deep: PREP package only, NOT closed. Four Kaggle exercise scripts (DDP correctness, 1 vs 2 GPU scaling, FSDP or ZeRO sharding, communication timing) are written and syntax-checked but have not run, so no GPU number exists. A CPU equivalence check passes. See level-3-deep/README.md and level-3-deep/KAGGLE-RUN.md.
 
 ## Benchmarks
 
@@ -48,7 +50,25 @@ Build measured 2026-11-05 on the Muse VM (CPU, Python 3.12, standard library onl
 | Checkpoint save and restart | checkpoint at step 12, restarted final max diff 0.0 vs uninterrupted, both strategies |
 | Communication accounting | 248 bytes per step all ranks, 7,440 bytes total over 30 steps, both strategies (accounting only, no transfer) |
 | Memory accounting | peak 79 elements on the largest rank vs 93-element full-model baseline (accounting only) |
-| Tests | 43 unit tests passing (23 new Build tests) plus the scaffold smoke test |
+| Tests | 43 unit tests passing (23 new Build tests) plus the scaffold smoke test at Build close; the suite has since grown, see below |
+
+Note on the two strategies: FSDP-class and ZeRO-class share the same update arithmetic in this emulation and differ only in phase order (when the all-gather happens). Their 0.0 difference from each other and from the reference holds by construction; it shows the bookkeeping is right, not that the strategies behave the same on real hardware.
+
+## Added studies (CPU, standard library, recorded)
+
+- Rank sweep, level-1-learn/results_sweep.json: the Learn run at 1 to 8 simulated ranks. With equal shards (1, 2, 4, 8 ranks) the all-reduce gradient differs from the single process only by float reduction order, at most 8.88e-16, and it does not grow with rank count. With unequal contiguous shards (3, 5, 6, 7 ranks) the naive mean is biased, by 0.94 to 1.70.
+- Shard-split sweep, same file: every 2-rank split from 1|7 to 7|1. The size-weighted average matches the full-batch gradient at every split; the naive mean is exact only at 4|4.
+- Ring all-reduce, level-2-build/results_scaling.json: a chunked ring (reduce-scatter, then all-gather) over the 31 MLP gradient values at 1, 2, 4, 8 and 16 ranks, with the per-rank volume against 2(N-1)/N x P and the float difference against a plain sum.
+- Stage-aware memory, same file: per-rank model-state counts for DDP and ZeRO stages 1 to 3 (logical accounting, no measurement).
+
+Tests now: 65 unit tests plus the scaffold smoke test (`python3 -m unittest discover -s tests`). Research review against a PhD-style rubric: docs/research-review.md.
+
+## Glossary of internal terms
+
+- Muse VM: the CPU machine the simulated levels were run on. BlackBox: a local GPU machine in the owner's fleet, offline during these levels. NEEDS-BLACKBOX-ON: a blocker tag meaning that machine must be online first.
+- Addendum B: the roadmap addendum that defines Deep as the two-GPU Kaggle exercise set.
+- claim_check gate: the review step a novelty claim must pass before it is published.
+- D-V3-11: the decision record that set the licences.
 
 ## Novelty
 
