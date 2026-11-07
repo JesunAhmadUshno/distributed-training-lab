@@ -203,7 +203,7 @@ function Learn() {
           <Lines label="Gradient difference between all-reduce average and single process by step" log lo={1e-17} hi={diffHi}
             ticks={diffHi > 1 ? [[1e-16, '1e-16'], [1e-8, '1e-8'], [1, '1']] : [[1e-16, '1e-16'], [1e-15, '1e-15']]}
             series={[{ ys: diffs, color: equal ? 'var(--good)' : 'var(--bad)', width: 2 }]} />
-          <p className="hint">Exact zeros sit on the floor line. Largest gap this run: <b>{e2(maxDiff)}</b>{equal ? ', float reduction order only.' : ', a real bias from unequal shards.'}</p>
+          <p className="hint">Exact zeros sit on the floor line. Largest gap this run: <b>{maxDiff < 1e-6 ? e2(maxDiff) : maxDiff.toFixed(4)}</b>{equal ? ', float reduction order only.' : ', a real bias from unequal shards.'}</p>
         </div>
       </div>
       <div className="tiles" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
