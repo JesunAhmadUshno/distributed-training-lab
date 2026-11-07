@@ -181,7 +181,7 @@ function Learn() {
           <p className="sub">
             A 3-parameter linear model on {LS.num_examples} examples. Each simulated rank computes the gradient on its own shard, an all-reduce averages them, and every replica applies the same update.
             The right chart shows how far that average sits from the single-process full-batch gradient at each step. With equal shards the gap is float rounding only, a few units in the last place.
-            Try 3, 5, 6 or 7 ranks: shards become unequal, plain averaging over-weights the small shards, and the gap jumps.
+            Try {sweep.rank_sweep.filter((r) => !r.equal_shards).map((r) => r.num_ranks).join(', ')} ranks: shards become unequal, plain averaging over-weights the small shards, and the gap jumps.
           </p>
         </div>
         <span className={`pill ${isDefault ? 'good' : 'info'}`}>{isDefault ? (run.finalLoss === LS.final_loss ? 'matches results_learn.json exactly' : `within ${e2(Math.abs(run.finalLoss - LS.final_loss))} of results_learn.json`) : 'live, off the recorded settings'}</span>
@@ -263,7 +263,7 @@ function Imbalance() {
 }
 
 const PHASES = {
-  fsdp: [['All-gather parameters', 'Each rank receives the other shards to rebuild the full 31-value copy for the forward pass.'], ['Compute gradient', 'Full-batch gradient on the gathered copy.'], ['Reduce-scatter gradient', 'Each rank keeps only the gradient slice for its own shard.'], ['Update own shard', 'Momentum update on the rank’s parameter and velocity shard. The full copy is dropped.']],
+  fsdp: [['All-gather parameters', 'Each rank receives the other shards to rebuild the full parameter copy for the forward pass.'], ['Compute gradient', 'Full-batch gradient on the gathered copy.'], ['Reduce-scatter gradient', 'Each rank keeps only the gradient slice for its own shard.'], ['Update own shard', 'Momentum update on the rank’s parameter and velocity shard. The full copy is dropped.']],
   zero: [['Compute gradient', 'Gradient on the current parameters.'], ['Partition gradient', 'Each rank keeps the gradient slice that matches its optimizer shard.'], ['Update own shard', 'Momentum update on the rank’s parameter and velocity shard.'], ['All-gather after update', 'Updated shards are gathered so every rank has the new parameters.']],
 };
 const BLOCKS = [['W1', 0, 20], ['b1', 20, 25], ['W2', 25, 30], ['b2', 30, 31]];
@@ -385,7 +385,7 @@ function Accounting() {
           <p className="eyebrow">Communication and memory, computed from the repo’s formulas</p>
           <h2>Count what would move and what each rank must hold, <em>before</em> renting a GPU.</h2>
           <p className="sub">
-            These are logical counts at 4 bytes per value, straight from <a href={blob('level-2-build/sharding.py')}>sharding.py</a>, <a href={blob('level-1-learn/data_parallel.py')}>data_parallel.py</a> and the new <a href={blob('level-2-build/collectives.py')}>collectives.py</a>.
+            These are logical counts at {FS.communication.bytes_per_param} bytes per value, straight from <a href={blob('level-2-build/sharding.py')}>sharding.py</a>, <a href={blob('level-1-learn/data_parallel.py')}>data_parallel.py</a> and the new <a href={blob('level-2-build/collectives.py')}>collectives.py</a>.
             Nothing was transferred or measured. Activations, latency and real allocator overhead are not modelled.
           </p>
         </div>
@@ -529,8 +529,8 @@ function Deep() {
 
 function Method() {
   const rows = [
-    ['Learn', 'Data-parallel training of the project’s GPT on 2 GPUs with PyTorch DDP, plus a TensorFlow MirroredStrategy bridge run', 'Simulated ranks in one Python process on a 3-parameter model. Teaches the all-reduce; no DDP, no GPU.', 'warn'],
-    ['Build', 'The same run under real FSDP and DeepSpeed with mid-run checkpoint restart, and NCCL bandwidth tests', 'FSDP-class and ZeRO-class emulation on a 31-parameter MLP with JSON checkpoint restart. No libraries, no bandwidth test.', 'warn'],
+    ['Learn', 'Data-parallel training of the project’s GPT on 2 GPUs with PyTorch DDP, plus a TensorFlow MirroredStrategy bridge run', `Simulated ranks in one Python process on a ${LS.communication.num_params}-parameter model. Teaches the all-reduce; no DDP, no GPU.`, 'warn'],
+    ['Build', 'The same run under real FSDP and DeepSpeed with mid-run checkpoint restart, and NCCL bandwidth tests', `FSDP-class and ZeRO-class emulation on a ${NUM_PARAMS}-parameter MLP with JSON checkpoint restart. No libraries, no bandwidth test.`, 'warn'],
     ['Deep', 'A tokens-per-second and cost scaling table by GPU count, a failure log, and a DDP/FSDP/DeepSpeed write-up', 'Kaggle scripts written, not run. CPU equivalence check passes.', 'bad'],
   ];
   const limits = [
@@ -560,7 +560,7 @@ function Method() {
           <h3>Reproduce</h3>
           <ol className="steps" style={{ marginTop: 10 }}>
             <li><span className="n">1</span><div><b>Run the three levels</b><div className="hint"><code>python3 level-1-learn/run_learn.py && python3 level-2-build/run_build.py && python3 level-3-deep/run_deep_prep.py</code></div></div></li>
-            <li><span className="n">2</span><div><b>Run the tests ({testCount} unit tests plus a smoke test)</b><div className="hint"><code>python3 -m unittest discover -s tests</code></div></div></li>
+            <li><span className="n">2</span><div><b>Run the tests ({testCount} unit tests plus a smoke test, counted from tests/ at build time)</b><div className="hint"><code>python3 -m unittest discover -s tests</code></div></div></li>
             <li><span className="n">3</span><div><b>Check nothing drifted</b><div className="hint"><code>git diff --exit-code -- 'level-*/results*.json'</code></div></div></li>
           </ol>
         </div>
