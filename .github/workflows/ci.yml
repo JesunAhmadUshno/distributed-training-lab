@@ -38,5 +38,4 @@ jobs:
         working-directory: level-3-deep/cluster
         run: |
           python -m unittest test_analysis -v
-          python analysis.py report ../runs/main.jsonl
-          git diff --exit-code -- ../results_deep.json
+          python analysis.py check ../runs/main.jsonl

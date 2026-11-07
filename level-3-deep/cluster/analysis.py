@@ -209,9 +209,25 @@ def report(rows, pred):
     return out
 
 
+def same(a, b, rel=1e-9):
+    """Equal structure and values; floats may differ in the last digits (Python versions sum differently)."""
+    if isinstance(a, float) or isinstance(b, float):
+        return isinstance(a, (int, float)) and isinstance(b, (int, float)) and math.isclose(a, b, rel_tol=rel)
+    if isinstance(a, dict):
+        return isinstance(b, dict) and a.keys() == b.keys() and all(same(a[k], b[k], rel) for k in a)
+    if isinstance(a, list):
+        return isinstance(b, list) and len(a) == len(b) and all(same(x, y, rel) for x, y in zip(a, b))
+    return a == b
+
+
 if __name__ == "__main__":
     cmd, path = sys.argv[1], sys.argv[2]
     rows = load(path)
+    if cmd == "check":
+        with open("../predictions.json") as f, open("../results_deep.json") as g:
+            ok = same(json.loads(json.dumps(report(rows, json.load(f)))), json.load(g))
+        print("results_deep.json reproduced" if ok else "results_deep.json DIFFERS from a fresh re-score")
+        sys.exit(0 if ok else 1)
     if cmd == "predict":
         res = predict(rows)
         dest = "../predictions.json"

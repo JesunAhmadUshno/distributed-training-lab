@@ -57,6 +57,13 @@ class T(unittest.TestCase):
         self.assertAlmostEqual(c["pred_t_ddp"], 0.2 + comm, places=6)
         self.assertAlmostEqual(c["pred_speedup"], 0.4 / (0.2 + comm), places=6)
 
+    def test_same_tolerates_last_digit_but_not_real_change(self):
+        a = {"x": [0.00035965241784430556, 1], "ok": True, "s": "L"}
+        self.assertTrue(A.same(a, {"x": [0.00035965241784436107, 1], "ok": True, "s": "L"}))
+        self.assertFalse(A.same(a, {"x": [0.00036, 1], "ok": True, "s": "L"}))
+        self.assertFalse(A.same(a, {"x": [0.00035965241784430556, 1], "ok": False, "s": "L"}))
+        self.assertFalse(A.same(a, {"x": [0.00035965241784430556], "ok": True, "s": "L"}))
+
 
 if __name__ == "__main__":
     unittest.main()
