@@ -1,7 +1,9 @@
 """Run the Build scenario and write deterministic results.
 
 Run: python level-2-build/run_build.py
-Writes level-2-build/results_build.json. No timestamps, no
+Writes level-2-build/results_build.json and results_scaling.json
+(the ring all-reduce study and stage-aware memory counts from
+collectives.py). No timestamps, no
 randomness, no wall clock values, so two runs produce an
 identical file. The checkpoint file is a generated intermediate
 written to a temp directory during the run and not committed.
@@ -15,7 +17,8 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from sharding import build_dataset, run_strategy  # noqa: E402
+from collectives import ring_study, stage_memory_accounting  # noqa: E402
+from sharding import NUM_PARAMS, build_dataset, run_strategy  # noqa: E402
 
 STEPS = 30
 CHECKPOINT_STEP = 12
@@ -51,6 +54,21 @@ def main():
         json.dump(out, f, indent=2, sort_keys=True)
         f.write("\n")
     print("Wrote", path)
+    scaling = {
+        "scenario": "chunked ring all-reduce of per-rank MLP gradients at 1, 2, 4, 8, 16 "
+                    "simulated ranks, and per-rank model-state element counts for DDP and "
+                    "ZeRO stages 1 to 3, one process, CPU, logical accounting only",
+        "ring_all_reduce": ring_study(data),
+        "stage_memory": [stage_memory_accounting(NUM_PARAMS, n) for n in (1, 2, 4, 8, 16)],
+    }
+    for r in scaling["ring_all_reduce"]:
+        print(f"ring {r['num_ranks']} ranks: max elements sent {r['max_elements_sent_by_one_rank']}, "
+              f"diff vs full {r['ring_max_abs_diff_vs_full']}")
+    scaling_path = os.path.join(HERE, "results_scaling.json")
+    with open(scaling_path, "w", encoding="utf-8") as f:
+        json.dump(scaling, f, indent=2, sort_keys=True)
+        f.write("\n")
+    print("Wrote", scaling_path)
     return 0
 
 

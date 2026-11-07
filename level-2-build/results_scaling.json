@@ -1,0 +1,148 @@
+{
+  "ring_all_reduce": [
+    {
+      "bytes_sent_all_ranks": 0,
+      "elements_sent_per_rank": [
+        0
+      ],
+      "ideal_elements_per_rank": 0.0,
+      "max_elements_sent_by_one_rank": 0,
+      "num_ranks": 1,
+      "rank_copies_max_diff": 0.0,
+      "ring_max_abs_diff_vs_full": 0.0,
+      "ring_max_abs_diff_vs_sequential": 0.0,
+      "sequential_max_abs_diff_vs_full": 0.0
+    },
+    {
+      "bytes_sent_all_ranks": 248,
+      "elements_sent_per_rank": [
+        31,
+        31
+      ],
+      "ideal_elements_per_rank": 31.0,
+      "max_elements_sent_by_one_rank": 31,
+      "num_ranks": 2,
+      "rank_copies_max_diff": 0.0,
+      "ring_max_abs_diff_vs_full": 5.551115123125783e-17,
+      "ring_max_abs_diff_vs_sequential": 0.0,
+      "sequential_max_abs_diff_vs_full": 5.551115123125783e-17
+    },
+    {
+      "bytes_sent_all_ranks": 744,
+      "elements_sent_per_rank": [
+        46,
+        47,
+        47,
+        46
+      ],
+      "ideal_elements_per_rank": 46.5,
+      "max_elements_sent_by_one_rank": 47,
+      "num_ranks": 4,
+      "rank_copies_max_diff": 0.0,
+      "ring_max_abs_diff_vs_full": 5.551115123125783e-17,
+      "ring_max_abs_diff_vs_sequential": 5.551115123125783e-17,
+      "sequential_max_abs_diff_vs_full": 5.551115123125783e-17
+    },
+    {
+      "bytes_sent_all_ranks": 1736,
+      "elements_sent_per_rank": [
+        54,
+        54,
+        54,
+        54,
+        54,
+        55,
+        55,
+        54
+      ],
+      "ideal_elements_per_rank": 54.25,
+      "max_elements_sent_by_one_rank": 55,
+      "num_ranks": 8,
+      "rank_copies_max_diff": 0.0,
+      "ring_max_abs_diff_vs_full": 2.220446049250313e-16,
+      "ring_max_abs_diff_vs_sequential": 2.220446049250313e-16,
+      "sequential_max_abs_diff_vs_full": 1.1102230246251565e-16
+    },
+    {
+      "bytes_sent_all_ranks": 3720,
+      "elements_sent_per_rank": [
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        58,
+        59,
+        59,
+        58
+      ],
+      "ideal_elements_per_rank": 58.125,
+      "max_elements_sent_by_one_rank": 59,
+      "num_ranks": 16,
+      "rank_copies_max_diff": 0.0,
+      "ring_max_abs_diff_vs_full": 5.551115123125783e-17,
+      "ring_max_abs_diff_vs_sequential": 5.551115123125783e-17,
+      "sequential_max_abs_diff_vs_full": 0.0
+    }
+  ],
+  "scenario": "chunked ring all-reduce of per-rank MLP gradients at 1, 2, 4, 8, 16 simulated ranks, and per-rank model-state element counts for DDP and ZeRO stages 1 to 3, one process, CPU, logical accounting only",
+  "stage_memory": [
+    {
+      "ddp": 93,
+      "largest_shard": 31,
+      "num_params": 31,
+      "num_ranks": 1,
+      "zero1": 93,
+      "zero2": 93,
+      "zero3_fsdp_peak": 124,
+      "zero3_fsdp_persistent": 93
+    },
+    {
+      "ddp": 93,
+      "largest_shard": 16,
+      "num_params": 31,
+      "num_ranks": 2,
+      "zero1": 78,
+      "zero2": 63,
+      "zero3_fsdp_peak": 79,
+      "zero3_fsdp_persistent": 48
+    },
+    {
+      "ddp": 93,
+      "largest_shard": 8,
+      "num_params": 31,
+      "num_ranks": 4,
+      "zero1": 70,
+      "zero2": 47,
+      "zero3_fsdp_peak": 55,
+      "zero3_fsdp_persistent": 24
+    },
+    {
+      "ddp": 93,
+      "largest_shard": 4,
+      "num_params": 31,
+      "num_ranks": 8,
+      "zero1": 66,
+      "zero2": 39,
+      "zero3_fsdp_peak": 43,
+      "zero3_fsdp_persistent": 12
+    },
+    {
+      "ddp": 93,
+      "largest_shard": 2,
+      "num_params": 31,
+      "num_ranks": 16,
+      "zero1": 64,
+      "zero2": 35,
+      "zero3_fsdp_peak": 37,
+      "zero3_fsdp_persistent": 6
+    }
+  ]
+}
