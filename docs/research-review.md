@@ -2,7 +2,21 @@
 
 Reviewed 2026-11-07 against a PhD-style research rubric. Each criterion gets a grade (A strong, B adequate, C weak, D missing), the evidence in the repo, what this change fixed, and, for any gap left open, the exact compute or data it needs. Rule applied: every gap that can be closed on a CPU, without paid APIs and without long runs, is closed in this change.
 
-## Summary
+## Update, later on 2026-11-07: Deep measured on GPUs
+
+The blocker named below (no multi-GPU run) is closed. Deep ran as a
+pre-registered study on two NVIDIA GB10 nodes over 1 GbE
+(level-3-deep/PREREG.md, README.md): hypotheses and pass lines were
+committed before any main-grid run, per-cell predictions were committed
+before any two-node run, and every result line carries its hosts,
+versions and link speed. 5 of 7 hypotheses pass; H5 (bf16 compression,
+29.4% against a 30% line in one cell) and H6 (FSDP2 memory, 65.3%
+against 65%) are reported as missed. The grades below for research
+question, hypotheses, and real-hardware evidence now stand at A for the
+two-node claims. Still open: DeepSpeed, more than two nodes, and a
+faster interconnect.
+
+## Summary (CPU review, earlier the same day)
 
 The repo is an honest teaching lab, not yet a research result. Its simulations are correct, deterministic and well tested, and every level says plainly that no GPU was used. The research question the SPEC poses (how DDP, FSDP and DeepSpeed compare on the same model at real scale) cannot be answered until a multi-GPU run happens. This change adds the CPU studies that were missing (rank sweep, all-splits imbalance, ring all-reduce, stage-aware memory), fixes documentation drift, adds related work, and publishes a dashboard whose live trainers are checked against the recorded results at build time.
 

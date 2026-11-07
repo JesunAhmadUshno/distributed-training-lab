@@ -11,3 +11,8 @@
   written); fixed with .detach() and relaunched once. No other E1 launch was repeated.
 - predictions.json computed by `analysis.py predict` from E2 and the single-node arm, committed and pushed
   before any two-node E3 run.
+- Phase 2 (main.jsonl): two-node grid, ddp and ddp_bf16 on 12 cells x 3 repeats plus fsdp on L at accumulation
+  1 x 3 repeats (75 runs), all rc=0 on both nodes, no relaunch. Node 1 GPU utilisation 0% at every repeat.
+- E4: clean run, then crashes at steps 13, 25 and 37 (rank 1 os._exit, max-restarts 2); each restarted once,
+  resumed from the last checkpoint, and ended on the clean run's SHA-256.
+- `analysis.py report` scored H1 to H7 against the pass lines as committed: 5 pass, H5 and H6 missed.

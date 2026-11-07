@@ -1,6 +1,6 @@
 # DEEP-SPEC: P19 distributed-training-lab, Addendum B scope
 
-Status: PREP SPEC, 2026-11-05. Deep is NOT closed by this document.
+Status: SUPERSEDED 2026-11-07. Deep moved to two DGX Spark nodes (PREREG.md, README.md). Kept as the original 2026-11-05 prep spec.
 Source: December Compression Protocol Addendum B (Jesun ruling
 2026-11-05). P19 Deep is the 2-GPU Kaggle exercise set, honestly
 labelled. The 4-GPU scope is the parked v1.1 remainder, recorded

@@ -1,4 +1,4 @@
-# Level 3, Deep PREP: distributed-training-lab (NOT DEEP CLOSED)
+# Level 3, Deep PREP (2026-11-05, superseded by README.md)
 
 Status: PREP PACKAGE, 2026-11-05. Deep is NOT closed. No GPU
 number was measured in this cycle, and no GPU number is claimed

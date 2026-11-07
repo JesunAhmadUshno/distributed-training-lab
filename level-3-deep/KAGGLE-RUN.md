@@ -1,7 +1,7 @@
 # KAGGLE-RUN: runbook for the P19 Deep exercises on Kaggle T4 x2
 
-Status: RUNBOOK ONLY, 2026-11-05. No Kaggle run happened in the
-prep cycle. Deep is NOT closed.
+Status: SUPERSEDED 2026-11-07. This Kaggle route never ran; Deep was
+measured on two DGX Spark nodes instead (PREREG.md, README.md).
 
 ## Named blocker (current, verified in the prep cycle)
 

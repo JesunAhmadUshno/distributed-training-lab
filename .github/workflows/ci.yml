@@ -34,3 +34,9 @@ jobs:
         run: python -m unittest tests.test_deep_prep_cpu -v
       - name: level 3 deep prep run
         run: python level-3-deep/run_deep_prep.py
+      - name: level 3 deep analysis tests and re-score from committed evidence
+        working-directory: level-3-deep/cluster
+        run: |
+          python -m unittest test_analysis -v
+          python analysis.py report ../runs/main.jsonl
+          git diff --exit-code -- ../results_deep.json

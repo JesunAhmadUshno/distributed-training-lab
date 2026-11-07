@@ -3,11 +3,11 @@ import learn from '../../level-1-learn/results_learn.json';
 import sweep from '../../level-1-learn/results_sweep.json';
 import build from '../../level-2-build/results_build.json';
 import scaling from '../../level-2-build/results_scaling.json';
-import deep from '../../level-3-deep/results_deep_prep.json';
+import res from '../../level-3-deep/results_deep.json';
+import pred from '../../level-3-deep/predictions.json';
 import { TRUE_PARAMS, trainDataParallel, splitCompare, ShardedTrainer, restartDemo, accounting, partitionIndices, lossM, NUM_PARAMS } from './sim.js';
 
-// Source files read at build time: the Kaggle scripts (for their purpose lines) and the test files (for the test count).
-const kaggle = import.meta.glob('../../level-3-deep/kaggle/*.py', { query: '?raw', import: 'default', eager: true });
+// Test files are read at build time for the test count.
 const testFiles = import.meta.glob('../../tests/*.py', { query: '?raw', import: 'default', eager: true });
 const testCount = Object.values(testFiles).reduce((n, src) => n + (src.match(/^\s+def test_/gm) || []).length, 0);
 
@@ -44,7 +44,7 @@ function MenuBar() {
       <a className="m" href={blob('level-2-build/README.md')}>Build</a>
       <a className="m" href={blob('docs/research-review.md')}>Research review</a>
       <span className="spacer" />
-      <span className="status"><i /> CPU simulation, no GPU claimed</span>
+      <span className="status"><i /> Deep measured on two DGX Spark nodes</span>
       <a href={REPO}>GitHub ↗</a>
       <span className="clock">{now.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' })}</span>
     </div>
@@ -131,14 +131,14 @@ function Hero() {
   return (
     <header className="card hero window" id="top" data-title="distributed-training-lab — README.md">
       <div className="head">
-        <p className="eyebrow">Learn · Build · Deep prep</p>
-        <span className="pill warn">● simulated ranks in one process, CPU, no GPU number claimed</span>
+        <p className="eyebrow">Learn · Build · Deep</p>
+        <span className="pill good">● Deep: {HPASS} of 7 pre-registered hypotheses pass, two GB10 nodes over 1 GbE</span>
       </div>
       <h1>Split the training, keep the answer: the averaged gradient matches one process to <em>{e2(LS.max_grad_diff_vs_single_process)}</em>.</h1>
       <p className="sub">
         This lab teaches how data-parallel and sharded training work by simulating the ranks in plain Python, then checks that only the bookkeeping changes.
         Sharded runs restarted from a step-{FS.checkpoint_step} checkpoint land on exactly the same parameters ({FS.restart_max_diff_vs_uninterrupted.toFixed(1)} difference, both strategies).
-        Every trainer below runs live in your browser. The real multi-GPU runs the spec asks for have not happened yet, and this page says so wherever it matters.
+        Every trainer below runs live in your browser. Learn and Build are CPU simulations; Deep is a real two-node run on two NVIDIA GB10 GPUs, pre-registered before it ran.
       </p>
       <div className="actions">
         <a className="btn primary" href="#learn">Run the data-parallel trainer</a>
@@ -152,8 +152,7 @@ function Hero() {
         <div className="tile"><div className="num">{FS.restart_max_diff_vs_uninterrupted.toFixed(1)} / {ZS.restart_max_diff_vs_uninterrupted.toFixed(1)}</div><div className="cap">Restart difference, FSDP-class / ZeRO-class</div></div>
       </div>
       <p className="hint" style={{ marginTop: 14 }}>
-        CPU equivalence check (Deep prep): <span className={`pill ${deep.all_pass ? 'good' : 'bad'}`}>all_pass {String(deep.all_pass)}</span>{' '}
-        <span className="pill info">gpu_numbers_measured {String(deep.gpu_numbers_measured)}</span>
+        Deep headline: on 1 GbE, two nodes run the largest model at <b>{SPD('L', 1).toFixed(2)}x</b> the speed of one, and a link model fitted in two minutes predicted every cell within <b>{(H.H3.max_abs_rel_error * 100).toFixed(1)}%</b>. <a href="#deep">See the study</a>
       </p>
     </header>
   );
@@ -484,45 +483,59 @@ function Scaling() {
   );
 }
 
+const H = res.hypotheses;
+const HPASS = Object.values(H).filter((h) => h.pass).length;
+const SPD = (size, k) => res.cells[`ddp-${size}-${k}`].speedup;
+const ACC = [1, 4, 16, 64];
+
 function Deep() {
-  const scripts = Object.entries(kaggle).map(([p, src]) => ({ file: p.split('/').pop(), purpose: (src.match(/^"""(.*)$/m) || [, ''])[1].replace(/\s*Kaggle only\.?$/, '') }));
-  const sp = deep.shard_partition_sums, cr = deep.checkpoint_restart_equality, ge = deep.gradient_all_reduce_equivalence;
-  const checks = [
-    ['Partition covers every parameter once', sp.covers_each_index_exactly_once, `${sp.num_params} parameters, shards ${sp.shard_sizes.join(' + ')}`],
-    ['Shard sums add up to the full sum', sp.shard_sum_abs_diff_vs_full === 0, `${sp.shard_element_sums.map((v) => v.toFixed(1)).join(' + ')} = ${sp.full_vector_sum}`],
-    ['All-gather rebuilds the vector', sp.all_gather_reconstruction_max_diff === 0, `max diff ${sp.all_gather_reconstruction_max_diff.toFixed(1)}`],
-    ['FSDP-class restart equals uninterrupted', cr.fsdp_restart_max_diff_vs_uninterrupted === 0, `checkpoint ${cr.checkpoint_step} of ${cr.total_steps}, diff ${cr.fsdp_restart_max_diff_vs_uninterrupted.toFixed(1)}`],
-    ['ZeRO-class restart equals uninterrupted', cr.zero_restart_max_diff_vs_uninterrupted === 0, `diff ${cr.zero_restart_max_diff_vs_uninterrupted.toFixed(1)}`],
-    ['Learn all-reduce matches one process', ge.learn_max_grad_diff_vs_single_process < 1e-12, `max diff ${e2(ge.learn_max_grad_diff_vs_single_process)}`],
-    ['No GPU number measured or claimed', deep.gpu_numbers_measured === false, `gpu_numbers_measured ${String(deep.gpu_numbers_measured)}`],
+  const [size, setSize] = useState('L');
+  const L = res.link;
+  const pct = (x) => `${(x * 100).toFixed(1)}%`;
+  const rows = [
+    ['H1', 'Two-node DDP and FSDP2 match a one-process replay; two DDP launches hash the same', `max diff DDP ${H.H1.max_param_diff.ddp}, FSDP ${H.H1.max_param_diff.fsdp}; ${H.H1.ddp_distinct_hashes} hash over ${H.H1.ddp_launches} launches`],
+    ['H2', 'All-reduce time is a line: alpha + bytes / beta, R² ≥ 0.99, beta 80 to 125 MB/s', `R² ${L.r2.toFixed(7)}, beta ${L.beta_MBps.toFixed(1)} MB/s, alpha ${(L.alpha_s * 1e3).toFixed(2)} ms`],
+    ['H3', 'The locked prediction lands within ±25% in every cell', `worst cell off by ${pct(H.H3.max_abs_rel_error)}`],
+    ['H4', 'The faster-or-slower call is right in ≥ 90% of cells; L at accumulation 1 below 0.25x', `${H.H4.side_correct} of ${H.H4.cells} right; L at k=1 runs ${H.H4.largest_model_accum1_speedup.toFixed(3)}x`],
+    ['H5', 'bf16 gradient compression cuts ≥ 30% wherever comm is half the step', `cuts ${pct(Math.min(...Object.values(H.H5.cells).map((c) => c.cut)))} to ${pct(Math.max(...Object.values(H.H5.cells).map((c) => c.cut)))}; S at k=16 missed`],
+    ['H6', 'FSDP2 peak memory ≤ 65% of DDP on L', `${pct(H.H6.ratio)} (${fmt(H.H6.fsdp_peak_mib)} vs ${fmt(H.H6.ddp_peak_mib)} MiB)`],
+    ['H7', 'Hard crash at step 13, 25 or 37 resumes bit-identical', `${H.H7.matches_clean.filter(Boolean).length} of ${H.H7.fault_steps.length} crash points match the clean hash`],
   ];
   return (
-    <section id="deep" className="card window reveal" data-title="KAGGLE-RUN.md — Deep exercise set">
+    <section id="deep" className="card window reveal" data-title="PREREG.md — two DGX Spark nodes over 1 GbE">
       <div className="head">
         <div>
-          <p className="eyebrow">Deep · prep package only</p>
-          <h2>The GPU exercises are written and <em>waiting</em>. No results exist yet.</h2>
+          <p className="eyebrow">Deep · measured, pre-registered</p>
+          <h2>Two GPUs over office Ethernet are <em>slower</em> than one, and a two-minute link test said so in advance.</h2>
           <p className="sub">
-            Deep is defined as a two-GPU exercise set for a free Kaggle notebook. The scripts are ready and pass a syntax check, but none has run, so there are no timings, no scaling table and no bandwidth figures here.
-            What did run is a CPU equivalence check that the sharding and restart logic is sound.
+            Two NVIDIA GB10 nodes, NCCL over TCP on a {res.env.link} link, GPT models of 5M, 30M and 92M parameters, three shuffled repeats per cell.
+            Predictions were committed to git before any two-node training ran. Two of seven pass lines were missed, narrowly, and stay missed.
           </p>
         </div>
-        <span className="pill warn">Deep not closed</span>
+        <span className="pill good">{HPASS} of 7 pass</span>
       </div>
-      <div className="grid2">
-        <div>
-          <h3>Kaggle scripts (level-3-deep/kaggle)</h3>
-          <ul className="scripts">
-            {scripts.map((s) => <li key={s.file}><a className="mono" href={blob(`level-3-deep/kaggle/${s.file}`)}>{s.file}</a><span className="hint">{s.purpose}</span><span className="pill warn">not run · compile-checked only</span></li>)}
-          </ul>
-        </div>
-        <div>
-          <h3>CPU equivalence checklist (results_deep_prep.json)</h3>
-          <ul className="scripts">
-            {checks.map(([t, ok, d]) => <li key={t}><b>{t}</b><span className="hint">{d}</span><span className={`pill ${ok ? 'good' : 'bad'}`}>{ok ? 'pass' : 'fail'}</span></li>)}
-          </ul>
-        </div>
+      <div style={{ overflowX: 'auto' }}>
+        <table>
+          <thead><tr><th>#</th><th>Pre-registered pass line</th><th>Measured</th><th>Result</th></tr></thead>
+          <tbody>{rows.map(([k, t, m]) => <tr key={k}><td><b>{k}</b></td><td>{t}</td><td className="mono">{m}</td><td><span className={`pill ${H[k].pass ? 'good' : 'bad'}`}>{H[k].pass ? 'pass' : 'missed'}</span></td></tr>)}</tbody>
+        </table>
       </div>
+      <div className="head" style={{ marginTop: 24 }}>
+        <h3>Speedup of two nodes over one, predicted vs measured</h3>
+        <Seg label="Model size" value={size} onChange={setSize} options={[['S', 'S · 5M'], ['M', 'M · 30M'], ['L', 'L · 92M']]} />
+      </div>
+      <div style={{ overflowX: 'auto' }}>
+        <table>
+          <thead><tr><th>Gradient accumulation</th><th>One node, s/step</th><th>Two nodes, s/step</th><th>Predicted speedup</th><th>Measured speedup (95% CI)</th><th>bf16 hook, s/step</th></tr></thead>
+          <tbody>{ACC.map((k) => {
+            const c = res.cells[`ddp-${size}-${k}`], pc = pred.cells[`${size}-${k}`];
+            return <tr key={k}><td><b>{k}</b></td><td>{res.cells[`single-${size}-${k}`].step_s.toFixed(3)}</td><td>{c.step_s.toFixed(3)}</td><td>{pc.pred_speedup.toFixed(2)}x</td>
+              <td><span className={`pill ${c.speedup > 1 ? 'good' : 'bad'}`}>{c.speedup.toFixed(2)}x</span> <span className="hint">[{c.speedup_ci.map((x) => x.toFixed(2)).join(', ')}]</span></td>
+              <td>{res.cells[`ddp_bf16-${size}-${k}`].step_s.toFixed(3)}</td></tr>;
+          })}</tbody>
+        </table>
+      </div>
+      <p className="hint">Two nodes only win when each node does 64 micro-batches between gradient syncs. The gradient for the 92M model is {fmt(pred.cells['L-1'].params * 4 / 1e6)} MB, and at {L.beta_MBps.toFixed(0)} MB/s that alone takes {(pred.cells['L-1'].pred_comm).toFixed(2)} s per sync.</p>
     </section>
   );
 }
@@ -531,10 +544,11 @@ function Method() {
   const rows = [
     ['Learn', 'Data-parallel training of the project’s GPT on 2 GPUs with PyTorch DDP, plus a TensorFlow MirroredStrategy bridge run', `Simulated ranks in one Python process on a ${LS.communication.num_params}-parameter model. Teaches the all-reduce; no DDP, no GPU.`, 'warn'],
     ['Build', 'The same run under real FSDP and DeepSpeed with mid-run checkpoint restart, and NCCL bandwidth tests', `FSDP-class and ZeRO-class emulation on a ${NUM_PARAMS}-parameter MLP with JSON checkpoint restart. No libraries, no bandwidth test.`, 'warn'],
-    ['Deep', 'A tokens-per-second and cost scaling table by GPU count, a failure log, and a DDP/FSDP/DeepSpeed write-up', 'Kaggle scripts written, not run. CPU equivalence check passes.', 'bad'],
+    ['Deep', 'A tokens-per-second scaling table by GPU count, a failure log, and a DDP/FSDP write-up', 'Two-node DDP, bf16-compressed DDP and FSDP2 on two GB10 GPUs over 1 GbE, pre-registered, with crash recovery tests.', 'good'],
   ];
   const limits = [
-    'No real distributed run exists: no torch.distributed, NCCL or GPU at any level.',
+    'Learn and Build are simulations; only Deep uses torch.distributed, NCCL and GPUs, and only two nodes, so nothing here says how the curve bends at 4 or 8.',
+    'Deep runs are 5 to 10 timed steps on synthetic tokens: a throughput study, not a convergence claim. DeepSpeed was not run.',
     'FSDP-class and ZeRO-class share the same update arithmetic, so their zero difference holds by construction. They differ only in phase order.',
     'Byte and memory figures are logical counts, not measurements, and ignore activations, latency and allocator overhead.',
     'Toy scale and full batch only: no minibatches, no sampler sharding, no randomness to average over.',
@@ -548,7 +562,7 @@ function Method() {
       <div style={{ overflowX: 'auto', marginTop: 16 }}>
         <table>
           <thead><tr><th>Level</th><th>Spec target</th><th>Done in this repo</th><th>Status</th></tr></thead>
-          <tbody>{rows.map(([l, s, d, c]) => <tr key={l}><td><b>{l}</b></td><td>{s}</td><td>{d}</td><td><span className={`pill ${c}`}>{c === 'bad' ? 'not run' : 'simulated'}</span></td></tr>)}</tbody>
+          <tbody>{rows.map(([l, s, d, c]) => <tr key={l}><td><b>{l}</b></td><td>{s}</td><td>{d}</td><td><span className={`pill ${c}`}>{c === 'good' ? 'measured' : c === 'bad' ? 'not run' : 'simulated'}</span></td></tr>)}</tbody>
         </table>
       </div>
       <div className="grid2" style={{ marginTop: 20 }}>
@@ -559,14 +573,14 @@ function Method() {
         <div id="reproduce">
           <h3>Reproduce</h3>
           <ol className="steps" style={{ marginTop: 10 }}>
-            <li><span className="n">1</span><div><b>Run the three levels</b><div className="hint"><code>python3 level-1-learn/run_learn.py && python3 level-2-build/run_build.py && python3 level-3-deep/run_deep_prep.py</code></div></div></li>
+            <li><span className="n">1</span><div><b>Run the three levels</b><div className="hint"><code>python3 level-1-learn/run_learn.py && python3 level-2-build/run_build.py && cd level-3-deep/cluster && python3 analysis.py report ../runs/main.jsonl</code></div></div></li>
             <li><span className="n">2</span><div><b>Run the tests ({testCount} unit tests plus a smoke test, counted from tests/ at build time)</b><div className="hint"><code>python3 -m unittest discover -s tests</code></div></div></li>
             <li><span className="n">3</span><div><b>Check nothing drifted</b><div className="hint"><code>git diff --exit-code -- 'level-*/results*.json'</code></div></div></li>
           </ol>
         </div>
       </div>
       <div className="docs" style={{ marginTop: 20 }}>
-        {[['SPEC.md', 'Spec', 'Scope and acceptance criteria'], ['level-1-learn/README.md', 'Learn write-up', 'Data parallel, per-step table'], ['level-2-build/README.md', 'Build write-up', 'Sharding and restart'], ['level-3-deep/KAGGLE-RUN.md', 'Kaggle runbook', 'Exact steps for the GPU run'], ['docs/research-review.md', 'Research review', 'Graded gaps and fixes'], ['NOVELTY.md', 'Novelty', 'Draft, not verified']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
+        {[['SPEC.md', 'Spec', 'Scope and acceptance criteria'], ['level-1-learn/README.md', 'Learn write-up', 'Data parallel, per-step table'], ['level-2-build/README.md', 'Build write-up', 'Sharding and restart'], ['level-3-deep/README.md', 'Deep write-up', 'Two-node study and results'], ['level-3-deep/PREREG.md', 'Pre-registration', 'Hypotheses fixed before the runs'], ['docs/research-review.md', 'Research review', 'Graded gaps and fixes'], ['NOVELTY.md', 'Novelty', 'Draft, not verified']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
       </div>
     </section>
   );

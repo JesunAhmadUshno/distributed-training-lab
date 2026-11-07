@@ -2,10 +2,10 @@
 
 Live dashboard: https://jesunahmadushno.github.io/distributed-training-lab/ (the trainers run in your browser as JavaScript ports of the Python below, checked against the committed results files at build time).
 
-Distributed training: DDP, FSDP, and DeepSpeed on the same model, plus a multi-node DDP track on CPU VMs. The GPU scaling table at Deep level stays parked until a free multi-GPU route exists.
+Distributed training from first principles: simulated data parallel and sharding on CPU (Learn, Build), then a pre-registered two-node GPU study (Deep): on two NVIDIA GB10 nodes over 1 GbE, two nodes are slower than one in 9 of 12 cells (down to 0.07x), and a two-parameter link model predicted every cell within 2.7% before the runs.
 
-Status: Learn DONE (2026-11-05). Build DONE (2026-11-05). Deep: prep package ready, NOT closed (no GPU run yet). Learn is a simulated data-parallel run in one process: no real DDP, no GPU claim. Build is a simulated parameter-sharding run in one process (FSDP-class and ZeRO-class strategies with checkpoint save and restart): no real FSDP or DeepSpeed libraries, no GPU claim, NEEDS-BLACKBOX-ON for the GPU route. Deep is defined by Addendum B as the 2-GPU Kaggle exercise set, honestly labelled; the 4-GPU scope is the parked v1.1 remainder.
-Project: P19. Fleet node: BlackBox (GPU). Wave: Wave 4 (Learn and Build).
+Status: v1.0. Learn DONE (2026-11-05). Build DONE (2026-11-05). Deep DONE (2026-11-07): measured on two DGX Spark nodes, 5 of 7 pre-registered hypotheses pass, 2 missed narrowly and reported as missed. Learn is a simulated data-parallel run in one process: no real DDP, no GPU claim. Build is a simulated parameter-sharding run in one process (FSDP-class and ZeRO-class strategies with checkpoint save and restart): no real FSDP or DeepSpeed libraries, no GPU claim. Deep moved from the Kaggle T4 x2 route (never run, kept as superseded) to two DGX Spark nodes; scaling beyond 2 nodes is the parked v1.1 remainder.
+Project: P19. Hardware: two NVIDIA DGX Spark (GB10) nodes for Deep.
 
 ## Start here
 
@@ -18,7 +18,7 @@ Project: P19. Fleet node: BlackBox (GPU). Wave: Wave 4 (Learn and Build).
 
 - Level 1, Learn: DONE (2026-11-05). Simulated data-parallel training of a 3-parameter linear model by 2 simulated ranks in one process, with all-reduce gradient averaging proven equal to the single-process gradient, replica consistency verified, shard imbalance measured, and communication volume accounted in code. See level-1-learn/README.md.
 - Level 2, Build: DONE (2026-11-05). Simulated parameter-sharded training of a 31-parameter 2-layer MLP by 2 simulated ranks in one process, under FSDP-class and ZeRO-class strategies on the same model and data, with checkpoint save at step 12 of 30 and restart proven identical to the uninterrupted run, plus communication and memory accounting in code. See level-2-build/README.md.
-- Level 3, Deep: PREP package only, NOT closed. Four Kaggle exercise scripts (DDP correctness, 1 vs 2 GPU scaling, FSDP or ZeRO sharding, communication timing) are written and syntax-checked but have not run, so no GPU number exists. A CPU equivalence check passes. See level-3-deep/README.md and level-3-deep/KAGGLE-RUN.md.
+- Level 3, Deep: DONE (2026-11-07). Two-node DDP, bf16-compressed DDP and FSDP2 on two GB10 GPUs over 1 GbE, pre-registered in level-3-deep/PREREG.md: exact DDP and FSDP2 equivalence (0.0 difference), a link fit of R^2 0.9999998 at 117 MB/s, per-cell predictions within 2.7%, bit-identical recovery from crashes at steps 13, 25 and 37. Missed: bf16 compression cut 29.4% in one cell (line 30%), FSDP2 used 65.3% of DDP memory (line 65%). See level-3-deep/README.md.
 
 ## Benchmarks
 
