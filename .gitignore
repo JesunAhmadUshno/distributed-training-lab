@@ -13,3 +13,5 @@ secrets/
 site/node_modules/
 site/dist/
 site/.rubric/
+level-3-deep/ckpt/
+__pycache__/
