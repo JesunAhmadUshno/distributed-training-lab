@@ -1,0 +1,266 @@
+rep 0 ddp_bf16 S k=16 rc=0
+rep 0 ddp S k=1 rc=0
+rep 0 ddp_bf16 L k=64 rc=0
+rep 0 ddp_bf16 M k=16 rc=0
+rep 0 ddp M k=16 rc=0
+rep 0 ddp M k=4 rc=0
+rep 0 ddp M k=64 rc=0
+rep 0 ddp L k=16 rc=0
+rep 0 ddp_bf16 L k=16 rc=0
+rep 0 ddp_bf16 L k=1 rc=0
+rep 0 ddp M k=1 rc=0
+rep 0 ddp S k=16 rc=0
+rep 0 ddp_bf16 L k=4 rc=0
+rep 0 ddp S k=64 rc=0
+rep 0 ddp_bf16 M k=4 rc=0
+rep 0 ddp L k=64 rc=0
+rep 0 ddp_bf16 M k=64 rc=0
+rep 0 ddp L k=4 rc=0
+rep 0 fsdp L k=1 rc=0
+rep 0 ddp_bf16 S k=64 rc=0
+rep 0 ddp_bf16 M k=1 rc=0
+rep 0 ddp L k=1 rc=0
+rep 0 ddp S k=4 rc=0
+rep 0 ddp_bf16 S k=4 rc=0
+rep 0 ddp_bf16 S k=1 rc=0
+rep 1 ddp L k=16 rc=0
+rep 1 ddp_bf16 L k=1 rc=0
+rep 1 fsdp L k=1 rc=0
+rep 1 ddp_bf16 L k=4 rc=0
+rep 1 ddp_bf16 L k=64 rc=0
+rep 1 ddp M k=4 rc=0
+rep 1 ddp_bf16 L k=16 rc=0
+rep 1 ddp_bf16 S k=4 rc=0
+rep 1 ddp_bf16 M k=1 rc=0
+rep 1 ddp L k=4 rc=0
+rep 1 ddp L k=64 rc=0
+rep 1 ddp_bf16 M k=4 rc=0
+rep 1 ddp S k=1 rc=0
+rep 1 ddp M k=64 rc=0
+rep 1 ddp S k=4 rc=0
+rep 1 ddp M k=16 rc=0
+rep 1 ddp_bf16 S k=1 rc=0
+rep 1 ddp_bf16 M k=64 rc=0
+rep 1 ddp_bf16 S k=16 rc=0
+rep 1 ddp_bf16 S k=64 rc=0
+rep 1 ddp S k=64 rc=0
+rep 1 ddp L k=1 rc=0
+rep 1 ddp S k=16 rc=0
+rep 1 ddp_bf16 M k=16 rc=0
+rep 1 ddp M k=1 rc=0
+rep 2 ddp S k=64 rc=0
+rep 2 ddp_bf16 M k=64 rc=0
+rep 2 ddp_bf16 M k=1 rc=0
+rep 2 ddp_bf16 S k=1 rc=0
+rep 2 ddp S k=1 rc=0
+rep 2 ddp_bf16 L k=16 rc=0
+rep 2 ddp M k=1 rc=0
+rep 2 ddp M k=64 rc=0
+rep 2 ddp_bf16 S k=4 rc=0
+rep 2 ddp_bf16 S k=64 rc=0
+rep 2 ddp_bf16 M k=16 rc=0
+rep 2 ddp_bf16 L k=4 rc=0
+rep 2 ddp_bf16 S k=16 rc=0
+rep 2 ddp L k=16 rc=0
+rep 2 ddp_bf16 M k=4 rc=0
+rep 2 ddp_bf16 L k=1 rc=0
+rep 2 fsdp L k=1 rc=0
+rep 2 ddp M k=16 rc=0
+rep 2 ddp L k=1 rc=0
+rep 2 ddp L k=4 rc=0
+rep 2 ddp M k=4 rc=0
+rep 2 ddp L k=64 rc=0
+rep 2 ddp_bf16 L k=64 rc=0
+rep 2 ddp S k=16 rc=0
+rep 2 ddp S k=4 rc=0
+{"backend": "nccl", "checkpoint_every": 10, "cuda": "13.0", "date": "2026-11-07T16:55:08-0500", "exp": "E4", "fault_step": -1, "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_last": 7.912989616394043, "nccl": "2.29.7", "param_sha256": "b107db2d6d7ff5bbc20f0f849d26699c22aa2970df876bde89544e04b9ef0702", "restart_count": 0, "resumed_from_step": null, "steps": 40, "torch": "2.12.0+cu130", "world_size": 2}
+node0 rc=0 node1 rc=0
+[rank0]:[E1107 16:55:16.234631995 ProcessGroupNCCL.cpp:672] [Rank 0] Collective WorkNCCL(SeqNum=29, OpType=ALLREDUCE, NumelIn=1048576, NumelOut=1048576, Timeout(ms)=20000) raised the following async exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<34571> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xfa50753ba988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xfa507629a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xfa50762a9234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xfa50762bc568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xfa50762bdeb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xfa5124db1ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xfa5126ec595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xfa5126f2bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+[rank0]:[E1107 16:55:16.235389467 ProcessGroupNCCL.cpp:2395] [PG ID 0 PG GUID 0(default_pg) Rank 0]  failure detected by watchdog at work sequence id: 29 PG status: last enqueued work: 30, last completed work: 28
+[rank0]:[E1107 16:55:16.235564399 ProcessGroupNCCL.cpp:804] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank0]:[E1107 16:55:16.235626080 ProcessGroupNCCL.cpp:2732] [PG ID 0 PG GUID 0(default_pg) Rank 0] First PG on this rank to signal dumping.
+[rank0]:[E1107 16:55:16.530713153 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: 30, last completed NCCL work: 28.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:55:16.530829411 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+[rank0]:[E1107 16:56:17.763710066 ProcessGroupNCCL.cpp:818] [Rank 0] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank0]:[E1107 16:56:17.763757891 ProcessGroupNCCL.cpp:832] [Rank 0] To avoid data inconsistency, we are taking the entire process down.
+[rank0]:[E1107 16:56:17.763807540 ProcessGroupNCCL.cpp:2197] [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<34571> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xfa50753ba988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xfa507629a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xfa50762a9234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xfa50762bc568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xfa50762bdeb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xfa5124db1ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xfa5126ec595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xfa5126f2bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<34571> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xfa50753ba988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xfa507629a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xfa50762a9234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xfa50762bc568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xfa50762bdeb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xfa5124db1ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xfa5126ec595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xfa5126f2bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2203 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xfa50753ba988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::Watchdog::run() + 0x5ec (0xfa50762be39c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xe1ae0 (0xfa5124db1ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x8595c (0xfa5126ec595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0xebb4c (0xfa5126f2bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+E1107 16:56:18.557000 3364766 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: -6) local_rank: 0 (pid: 3364799) of binary: /usr/bin/python3
+[rank0]:[E1107 16:56:20.018615161 ProcessGroupNCCL.cpp:1922] [PG ID 0 PG GUID 0(default_pg) Rank 0] Observed flight recorder dump signal from another rank via TCPStore.
+[rank0]:[E1107 16:56:20.018728779 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:56:20.018989216 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+{"backend": "nccl", "checkpoint_every": 10, "cuda": "13.0", "date": "2026-11-07T16:56:27-0500", "exp": "E4", "fault_step": 13, "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_last": 7.912989616394043, "nccl": "2.29.7", "param_sha256": "b107db2d6d7ff5bbc20f0f849d26699c22aa2970df876bde89544e04b9ef0702", "restart_count": 1, "resumed_from_step": 10, "steps": 40, "torch": "2.12.0+cu130", "world_size": 2}
+node0 rc=0 node1 rc=0
+[rank0]:[E1107 16:56:37.279907798 ProcessGroupNCCL.cpp:672] [Rank 0] Collective WorkNCCL(SeqNum=52, OpType=ALLREDUCE, NumelIn=4273664, NumelOut=4273664, Timeout(ms)=20000) raised the following async exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+socketProgress: Connection closed by remote peer 192.168.99.153<57655>
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe481c235a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe481c323a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe481c3249234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe481c325c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe481c325deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe48271d21ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe48273e1595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe48273e7bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+[rank0]:[E1107 16:56:37.280392047 ProcessGroupNCCL.cpp:2395] [PG ID 0 PG GUID 0(default_pg) Rank 0]  failure detected by watchdog at work sequence id: 52 PG status: last enqueued work: 54, last completed work: 51
+[rank0]:[E1107 16:56:37.280521138 ProcessGroupNCCL.cpp:804] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank0]:[E1107 16:56:37.280586211 ProcessGroupNCCL.cpp:2732] [PG ID 0 PG GUID 0(default_pg) Rank 0] First PG on this rank to signal dumping.
+[rank0]:[E1107 16:56:38.172501017 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: 54, last completed NCCL work: 51.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:56:38.172631067 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+[rank0]:[E1107 16:57:38.809848756 ProcessGroupNCCL.cpp:818] [Rank 0] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank0]:[E1107 16:57:38.809879093 ProcessGroupNCCL.cpp:832] [Rank 0] To avoid data inconsistency, we are taking the entire process down.
+[rank0]:[E1107 16:57:38.809914678 ProcessGroupNCCL.cpp:2197] [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+socketProgress: Connection closed by remote peer 192.168.99.153<57655>
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe481c235a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe481c323a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe481c3249234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe481c325c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe481c325deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe48271d21ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe48273e1595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe48273e7bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+socketProgress: Connection closed by remote peer 192.168.99.153<57655>
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe481c235a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe481c323a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe481c3249234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe481c325c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe481c325deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe48271d21ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe48273e1595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe48273e7bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2203 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe481c235a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::Watchdog::run() + 0x5ec (0xe481c325e39c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xe1ae0 (0xe48271d21ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x8595c (0xe48273e1595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0xebb4c (0xe48273e7bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+E1107 16:57:39.589000 3367478 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: -6) local_rank: 0 (pid: 3367999) of binary: /usr/bin/python3
+[rank0]:[E1107 16:57:41.029033352 ProcessGroupNCCL.cpp:1922] [PG ID 0 PG GUID 0(default_pg) Rank 0] Observed flight recorder dump signal from another rank via TCPStore.
+[rank0]:[E1107 16:57:41.029168139 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:57:41.029347566 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+{"backend": "nccl", "checkpoint_every": 10, "cuda": "13.0", "date": "2026-11-07T16:57:46-0500", "exp": "E4", "fault_step": 25, "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_last": 7.912989616394043, "nccl": "2.29.7", "param_sha256": "b107db2d6d7ff5bbc20f0f849d26699c22aa2970df876bde89544e04b9ef0702", "restart_count": 1, "resumed_from_step": 20, "steps": 40, "torch": "2.12.0+cu130", "world_size": 2}
+node0 rc=0 node1 rc=0
+[rank0]:[E1107 16:57:58.572807220 ProcessGroupNCCL.cpp:672] [Rank 0] Collective WorkNCCL(SeqNum=76, OpType=ALLREDUCE, NumelIn=4273664, NumelOut=4273664, Timeout(ms)=20000) raised the following async exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<59467> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe123d8d5a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe123d9c3a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe123d9c49234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe123d9c5c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe123d9c5deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe12488721ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe1248a82595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe1248a88bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+[rank0]:[E1107 16:57:58.573513217 ProcessGroupNCCL.cpp:2395] [PG ID 0 PG GUID 0(default_pg) Rank 0]  failure detected by watchdog at work sequence id: 76 PG status: last enqueued work: 78, last completed work: 75
+[rank0]:[E1107 16:57:58.573936008 ProcessGroupNCCL.cpp:804] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank0]:[E1107 16:57:58.574019689 ProcessGroupNCCL.cpp:2732] [PG ID 0 PG GUID 0(default_pg) Rank 0] First PG on this rank to signal dumping.
+[rank0]:[E1107 16:57:59.159651087 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: 78, last completed NCCL work: 75.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:57:59.159928228 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+[rank0]:[E1107 16:58:59.103752761 ProcessGroupNCCL.cpp:818] [Rank 0] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank0]:[E1107 16:58:59.103796826 ProcessGroupNCCL.cpp:832] [Rank 0] To avoid data inconsistency, we are taking the entire process down.
+[rank0]:[E1107 16:58:59.103846763 ProcessGroupNCCL.cpp:2197] [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<59467> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe123d8d5a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe123d9c3a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe123d9c49234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe123d9c5c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe123d9c5deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe12488721ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe1248a82595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe1248a88bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: NCCL error: remote process exited or there was a network error, NCCL version 2.29.7
+ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+Last error:
+ncclOsSocketProgressOpt: Call to send to 192.168.99.153<59467> failed : Connection reset by peer
+Exception raised from checkForNCCLErrorsInternal at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2866 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe123d8d5a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::checkForNCCLErrorsInternal(std::shared_ptr<c10d::NCCLComm>&) + 0x2cc (0xe123d9c3a70c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::checkAndSetException() + 0x74 (0xe123d9c49234 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x808 (0xe123d9c5c568 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::run() + 0x108 (0xe123d9c5deb8 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0xe1ae0 (0xe12488721ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #6: <unknown function> + 0x8595c (0xe1248a82595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #7: <unknown function> + 0xebb4c (0xe1248a88bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2203 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xe123d8d5a988 in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::Watchdog::run() + 0x5ec (0xe123d9c5e39c in /home/galleaai-nvidiadgxspark2/.local/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xe1ae0 (0xe12488721ae0 in /lib/aarch64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x8595c (0xe1248a82595c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0xebb4c (0xe1248a88bb4c in /lib/aarch64-linux-gnu/libc.so.6)
+
+E1107 16:59:00.898000 3416707 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: -6) local_rank: 0 (pid: 3416740) of binary: /usr/bin/python3
+[rank0]:[E1107 16:59:02.285999348 ProcessGroupNCCL.cpp:1922] [PG ID 0 PG GUID 0(default_pg) Rank 0] Observed flight recorder dump signal from another rank via TCPStore.
+[rank0]:[E1107 16:59:02.286647727 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E1107 16:59:02.286871778 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+{"backend": "nccl", "checkpoint_every": 10, "cuda": "13.0", "date": "2026-11-07T16:59:05-0500", "exp": "E4", "fault_step": 37, "gpu": "NVIDIA GB10", "hosts": ["spark-6aa3", "spark-31c4"], "link": "enP7s7 1000 Mb/s", "loss_last": 7.912989616394043, "nccl": "2.29.7", "param_sha256": "b107db2d6d7ff5bbc20f0f849d26699c22aa2970df876bde89544e04b9ef0702", "restart_count": 1, "resumed_from_step": 30, "steps": 40, "torch": "2.12.0+cu130", "world_size": 2}
+node0 rc=0 node1 rc=0

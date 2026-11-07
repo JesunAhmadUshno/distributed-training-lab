@@ -1,3 +1,6 @@
 phase=single rep=0 node1_gpu_util=0 %
 phase=single rep=1 node1_gpu_util=0 %
 phase=single rep=2 node1_gpu_util=0 %
+phase=two rep=0 node1_gpu_util=0 %
+phase=two rep=1 node1_gpu_util=0 %
+phase=two rep=2 node1_gpu_util=0 %

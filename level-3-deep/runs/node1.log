@@ -1,0 +1,19 @@
+E1107 16:57:59.236000 2965034 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: 1) local_rank: 0 (pid: 2965057) of binary: /usr/bin/python3
+[rank1]:[E1107 16:58:01.923586956 ProcessGroupNCCL.cpp:1922] [PG ID 0 PG GUID 0(default_pg) Rank 1] Observed flight recorder dump signal from another rank via TCPStore.
+[rank1]:[E1107 16:58:01.925381664 ProcessGroupNCCL.cpp:1987] [PG ID 0 PG GUID 0(default_pg) Rank 1] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank1]:[E1107 16:58:01.925663585 ProcessGroupNCCL.cpp:1700] [PG ID 0 PG GUID 0(default_pg) Rank 1] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1, only active collectives: 0
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/galleaai/p19-run/cluster/e4_fault.py", line 33, in <module>
+[rank1]:     model = DDP(c.GPT("S").cuda())
+[rank1]:             ^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/galleaai/.local/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1020, in __init__
+[rank1]:     _verify_param_shape_across_processes(self.process_group, parameters)
+[rank1]:   File "/home/galleaai/.local/lib/python3.12/site-packages/torch/distributed/utils.py", line 286, in _verify_param_shape_across_processes
+[rank1]:     return dist._verify_params_across_processes(process_group, tensors, logger)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: torch.distributed.DistBackendError: NCCL error in: /pytorch/torch/csrc/distributed/c10d/NCCLUtils.cpp:93, remote process exited or there was a network error, NCCL version 2.29.7
+[rank1]: ncclRemoteError: A call failed possibly due to a network error or a remote process exiting prematurely.
+[rank1]: Last error:
+[rank1]: ncclOsSocketPollConnect: connect to 192.168.99.170<40069> returned Connection refused, exceeded error retry count after 35 attempts
+[rank1]:[W1107 16:59:00.303217345 ProcessGroupNCCL.cpp:1647] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E1107 16:59:01.470000 2965034 torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: 1) local_rank: 0 (pid: 2965127) of binary: /usr/bin/python3
