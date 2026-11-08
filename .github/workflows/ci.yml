@@ -4,6 +4,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+permissions:
+  contents: read
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -22,6 +24,8 @@ jobs:
         run: ruff check .
       - name: scaffold smoke test
         run: python tests/test_smoke.py
+      - name: all tests (unit, layout and lock, review re-derivation)
+        run: python -m unittest discover -s tests -v
       - name: level 1 learn tests
         run: python -m unittest tests.test_learn_data_parallel -v
       - name: level 1 learn run
@@ -39,3 +43,5 @@ jobs:
         run: |
           python -m unittest test_analysis -v
           python analysis.py check ../runs/main.jsonl
+      - name: results regenerate unchanged from the code
+        run: git diff --exit-code -- 'level-*/results*.json'

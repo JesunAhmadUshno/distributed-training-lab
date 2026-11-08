@@ -39,10 +39,10 @@ function MenuBar() {
     <div className="menubar" role="banner">
       <span className="apple" aria-hidden="true">◆</span>
       <a className="app" href="#top">Distributed Training Lab</a>
-      <a className="m" href={blob('SPEC.md')}>Spec</a>
+      <a className="m" href={blob('PROPOSAL.md')}>Proposal</a>
       <a className="m" href={blob('level-1-learn/README.md')}>Learn</a>
       <a className="m" href={blob('level-2-build/README.md')}>Build</a>
-      <a className="m" href={blob('docs/research-review.md')}>Research review</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
       <span className="spacer" />
       <span className="status"><i /> Deep measured on two DGX Spark nodes</span>
       <a href={REPO}>GitHub ↗</a>
@@ -553,10 +553,10 @@ function Method() {
     'Byte and memory figures are logical counts, not measurements, and ignore activations, latency and allocator overhead.',
     'Toy scale and full batch only: no minibatches, no sampler sharding, no randomness to average over.',
     'The Learn model has not converged at the recorded step count; that run is about equivalence, not accuracy.',
-    'Prior-art comparison is still a draft; see NOVELTY.md and the research review.',
+    'Prior-art comparison is still a draft; see PROPOSAL.md and REPORT.md.',
   ];
   return (
-    <section id="method" className="card window reveal" data-title="SPEC.md — what was asked, what was done">
+    <section id="method" className="card window reveal" data-title="PROPOSAL.md — what was asked, what was done">
       <p className="eyebrow">Method and limits</p>
       <h2>What the spec asked for, against <em>what actually ran</em>.</h2>
       <div style={{ overflowX: 'auto', marginTop: 16 }}>
@@ -580,7 +580,7 @@ function Method() {
         </div>
       </div>
       <div className="docs" style={{ marginTop: 20 }}>
-        {[['SPEC.md', 'Spec', 'Scope and acceptance criteria'], ['level-1-learn/README.md', 'Learn write-up', 'Data parallel, per-step table'], ['level-2-build/README.md', 'Build write-up', 'Sharding and restart'], ['level-3-deep/README.md', 'Deep write-up', 'Two-node study and results'], ['level-3-deep/PREREG.md', 'Pre-registration', 'Hypotheses fixed before the runs'], ['docs/research-review.md', 'Research review', 'Graded gaps and fixes'], ['NOVELTY.md', 'Novelty', 'Draft, not verified']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
+        {[['PROPOSAL.md', 'Proposal', 'Scope before the lock, novelty draft'], ['level-1-learn/README.md', 'Learn write-up', 'Data parallel, per-step table'], ['level-2-build/README.md', 'Build write-up', 'Sharding and restart'], ['level-3-deep/README.md', 'Deep write-up', 'Two-node study and results'], ['level-3-deep/PREREG.md', 'Pre-registration', 'Hypotheses fixed before the runs'], ['REPORT.md', 'Report', 'Results, misses, review']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 name: Pages
 
 # Builds the live dashboard in site/ from the committed level-*/results*.json files and publishes it to GitHub Pages.
-# This replaces the earlier Jekyll build of docs/: docs/index.md stays in the repo but is no longer served.
+# This replaces the earlier Jekyll build of docs/ (docs/index.md was removed in the standard v2 migration).
 on:
   push:
     branches: [main]
