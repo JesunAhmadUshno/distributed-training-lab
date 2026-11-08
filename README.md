@@ -1,78 +1,80 @@
 # distributed-training-lab
 
-Live dashboard: https://jesunahmadushno.github.io/distributed-training-lab/ (the trainers run in your browser as JavaScript ports of the Python below, checked against the committed results files at build time).
+**Question.** On two GPU nodes joined by commodity 1 GbE, when does
+data-parallel training beat one node, and can a two-parameter link model
+measured in two minutes predict the answer before the training runs?
 
-Distributed training from first principles: simulated data parallel and sharding on CPU (Learn, Build), then a pre-registered two-node GPU study (Deep): on two NVIDIA GB10 nodes over 1 GbE, two nodes are slower than one in 9 of 12 cells (down to 0.07x), and a two-parameter link model predicted every cell within 2.7% before the runs.
+**Headline.** On two NVIDIA GB10 nodes over 1 GbE, two nodes are slower than one in 9 of 12 cells, down to 0.069x (95% bootstrap interval 0.067 to 0.075) for the 92M-parameter model at accumulation 1, and a link model fitted before any two-node run predicted every cell's step time within 2.7%.
 
-Status: v1.0. Learn DONE (2026-11-05). Build DONE (2026-11-05). Deep DONE (2026-11-07): measured on two DGX Spark nodes, 5 of 7 pre-registered hypotheses pass, 2 missed narrowly and reported as missed. Learn is a simulated data-parallel run in one process: no real DDP, no GPU claim. Build is a simulated parameter-sharding run in one process (FSDP-class and ZeRO-class strategies with checkpoint save and restart): no real FSDP or DeepSpeed libraries, no GPU claim. Deep moved from the Kaggle T4 x2 route (never run, kept as superseded) to two DGX Spark nodes; scaling beyond 2 nodes is the parked v1.1 remainder.
-Project: P19. Hardware: two NVIDIA DGX Spark (GB10) nodes for Deep.
+**Field.** ML and AI research. **Job family.** Machine learning
+infrastructure (distributed training).
 
-## Start here
+**Verdict.** v1.0 Released. The Deep study was pre-registered in
+level-3-deep/PREREG.md (tag proposal-v1) before any of its runs; 5 of 7
+hypotheses pass and the two misses (H5, H6) are reported with their
+measured values. Tests pass in CI on Python 3.11 and 3.12, CI re-scores
+the results from the raw run lines, and every headline number was
+re-derived from that evidence by a separate check (REPORT.md, Review).
+The Learn and Build CPU simulations came before the lock and are not
+pre-registered; they are background, not results.
 
-1. Read SPEC.md for scope and acceptance criteria.
-2. Read DOSSIER.md for the past, present, and future of this problem (v1).
-3. Read NOVELTY.md for the proposed novelty (DRAFT, pending the Jev claim_check gate).
-4. Start at level-1-learn/README.md, then level-2-build, then level-3-deep.
+Live dashboard: https://jesunahmadushno.github.io/distributed-training-lab/
+(the trainers run in your browser as JavaScript ports of the Python
+below, checked against the committed results files at build time).
 
-## Level map
+## Reproduce
 
-- Level 1, Learn: DONE (2026-11-05). Simulated data-parallel training of a 3-parameter linear model by 2 simulated ranks in one process, with all-reduce gradient averaging proven equal to the single-process gradient, replica consistency verified, shard imbalance measured, and communication volume accounted in code. See level-1-learn/README.md.
-- Level 2, Build: DONE (2026-11-05). Simulated parameter-sharded training of a 31-parameter 2-layer MLP by 2 simulated ranks in one process, under FSDP-class and ZeRO-class strategies on the same model and data, with checkpoint save at step 12 of 30 and restart proven identical to the uninterrupted run, plus communication and memory accounting in code. See level-2-build/README.md.
-- Level 3, Deep: DONE (2026-11-07). Two-node DDP, bf16-compressed DDP and FSDP2 on two GB10 GPUs over 1 GbE, pre-registered in level-3-deep/PREREG.md: exact DDP and FSDP2 equivalence (0.0 difference), a link fit of R^2 0.9999998 at 117 MB/s, per-cell predictions within 2.7%, bit-identical recovery from crashes at steps 13, 25 and 37. Missed: bf16 compression cut 29.4% in one cell (line 30%), FSDP2 used 65.3% of DDP memory (line 65%). See level-3-deep/README.md.
+Checks, anywhere (Python 3 standard library only, no GPU):
 
-## Benchmarks
+```text
+python3 -m unittest discover -s tests -v
+cd level-3-deep/cluster && python3 -m unittest test_analysis && python3 analysis.py check ../runs/main.jsonl
+python3 level-1-learn/run_learn.py && python3 level-2-build/run_build.py && git diff --exit-code -- 'level-*/results*.json'
+```
 
-Measured 2026-11-05 on the Muse VM (CPU, Python 3.12, standard library only). Simulated ranks in one process: no GPU, no real DDP, no wall time or throughput claimed. Full method and per-step table: level-1-learn/README.md.
+`analysis.py check` re-scores H1 to H7 from level-3-deep/runs/main.jsonl
+and fails if the result differs from level-3-deep/results_deep.json.
+The two-node runs themselves need two CUDA nodes with NCCL; the order of
+record is in level-3-deep/README.md (Reproduce).
 
-| Test | Result |
-| --- | --- |
-| Simulated ranks / shard sizes | 2 ranks, shards of 4 and 4 from 8 synthetic examples |
-| Model | 3-parameter linear model, true parameters [2.0, -1.0, 1.0] |
-| Training | 20 synchronous steps, learning rate 0.05 |
-| Combined loss | 11.5 initial, 0.104349 final |
-| Final parameters | [1.995697, -0.545749, 0.537617] |
-| All-reduce gradient vs single-process | max difference 8.88e-16 over 20 steps |
-| Replica consistency | max difference 0.0 over 20 steps |
-| Communication accounting | 12 bytes per rank per step, 480 bytes total over 20 steps (accounting only, no transfer) |
-| Shard imbalance check (6 plus 2) | naive average differs from full gradient by 2.833333; size-weighted average matches (difference 0.0) |
-| Tests | 20 unit tests passing plus the scaffold smoke test |
+## Lifecycle
 
-Build measured 2026-11-05 on the Muse VM (CPU, Python 3.12, standard library only). Simulated ranks in one process: no GPU, no real FSDP or DeepSpeed libraries, communication and memory are logical accounting only. Full method and per-strategy table: level-2-build/README.md.
+- Question: DONE 2026-11-07
+- Proposal: DONE 2026-11-07
+- Baseline: DONE 2026-11-07
+- Build: DONE 2026-11-07
+- Evaluate: DONE 2026-11-07
+- Report: DONE 2026-11-07
+- Review: DONE 2026-11-08
+- Release: DONE 2026-11-07
 
-| Test | Result |
-| --- | --- |
-| Simulated ranks / parameter shards | 2 ranks, shards of 16 and 15 from 31 parameters |
-| Model | 2-layer MLP, input 4, hidden 5 (tanh), output 1, 31 parameters |
-| Training | 30 steps, learning rate 0.05, momentum 0.5, 16 synthetic examples |
-| Loss (both strategies) | 3.952440 initial, 0.037717 final |
-| Strategies | FSDP-class and ZeRO-class, same model, data, and steps |
-| Max diff vs single-process reference | 0.0 for both strategies |
-| Checkpoint save and restart | checkpoint at step 12, restarted final max diff 0.0 vs uninterrupted, both strategies |
-| Communication accounting | 248 bytes per step all ranks, 7,440 bytes total over 30 steps, both strategies (accounting only, no transfer) |
-| Memory accounting | peak 79 elements on the largest rank vs 93-element full-model baseline (accounting only) |
-| Tests | 43 unit tests passing (23 new Build tests) plus the scaffold smoke test at Build close; the suite has since grown, see below |
+Baseline here is the single-node arm of the Deep grid; the CPU levels
+(Learn, Build, 2026-11-05) are background. Release is the v1.0 tag; the
+2026-11-08 review re-verified it under the portfolio standard v2.
 
-Note on the two strategies: FSDP-class and ZeRO-class share the same update arithmetic in this emulation and differ only in phase order (when the all-gather happens). Their 0.0 difference from each other and from the reference holds by construction; it shows the bookkeeping is right, not that the strategies behave the same on real hardware.
+## Layout
 
-## Added studies (CPU, standard library, recorded)
+PREREG.md is named by its own lock and keeps its place; the study
+folders keep their names because the lock, CI and the dashboard refer
+to them. The second column maps each path to its role in the standard.
 
-- Rank sweep, level-1-learn/results_sweep.json: the Learn run at 1 to 8 simulated ranks. With equal shards (1, 2, 4, 8 ranks) the all-reduce gradient differs from the single process only by float reduction order, at most 8.88e-16, and it does not grow with rank count. With unequal contiguous shards (3, 5, 6, 7 ranks) the naive mean is biased, by 0.94 to 1.70.
-- Shard-split sweep, same file: every 2-rank split from 1|7 to 7|1. The size-weighted average matches the full-batch gradient at every split; the naive mean is exact only at 4|4.
-- Ring all-reduce, level-2-build/results_scaling.json: a chunked ring (reduce-scatter, then all-gather) over the 31 MLP gradient values at 1, 2, 4, 8 and 16 ranks, with the per-rank volume against 2(N-1)/N x P and the float difference against a plain sum.
-- Stage-aware memory, same file: per-rank model-state counts for DDP and ZeRO stages 1 to 3 (logical accounting, no measurement).
+| Path | Role | What it holds |
+| --- | --- | --- |
+| level-3-deep/PREREG.md | proposal (locked) | Question, hypotheses H1 to H7 with pass lines, design, analysis plan (tag proposal-v1); a test fails if one byte changes |
+| PROPOSAL.md | proposal (history) | Where the lock is, and the pre-lock scope (spec, novelty draft, dossier) |
+| REPORT.md | report | Background, method, results, misses, threats, review, future work |
+| level-3-deep/runs/ | evidence | main.jsonl (every result line, stamped with hosts, versions, link), logs, RUNLOG.md, excluded bring-up runs |
+| level-3-deep/predictions.json, results_deep.json | results | Locked per-cell predictions; scores, regenerated by analysis.py |
+| level-3-deep/cluster/ | code | The two-node harness and the standard-library analysis |
+| level-1-learn/, level-2-build/ | code, background | CPU simulations of data parallel and sharding, their runners and results files |
+| level-3-deep/kaggle/, PREP-README.md, DEEP-SPEC.md, KAGGLE-RUN.md | superseded | The 2026-11-05 Kaggle route, never run (docs/decisions/0001) |
+| tests/ | tests | Unit tests, the lock and layout check, the review re-derivation |
+| docs/decisions/ | decisions | Route change, scope of the lock |
+| site/ | dashboard | Reads the results files at build time |
+| CHANGELOG.md, CITATION.cff, SECURITY.md, LICENSE | release | |
 
-Tests now: 65 unit tests plus the scaffold smoke test (`python3 -m unittest discover -s tests`). Research review against a PhD-style rubric: docs/research-review.md.
-
-## Glossary of internal terms
-
-- Muse VM: the CPU machine the simulated levels were run on. BlackBox: a local GPU machine in the owner's fleet, offline during these levels. NEEDS-BLACKBOX-ON: a blocker tag meaning that machine must be online first.
-- Addendum B: the roadmap addendum that defines Deep as the two-GPU Kaggle exercise set.
-- claim_check gate: the review step a novelty claim must pass before it is published.
-- D-V3-11: the decision record that set the licences.
-
-## Novelty
-
-PROPOSED. See NOVELTY.md. The novelty text is a draft until the Jev claim_check gate passes on it.
+No experiments/ or results/ folder: the evidence and results live in
+level-3-deep/ where the locked PREREG.md and the harness expect them.
 
 ## License
 

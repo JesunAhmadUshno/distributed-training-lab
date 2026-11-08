@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "distributed-training-lab: when two GPU nodes over 1 GbE beat one, predicted before the runs"
+authors:
+  - family-names: Ushno
+    given-names: Jesun Ahmad
+version: "1.0"
+repository-code: "https://github.com/JesunAhmadUshno/distributed-training-lab"
+url: "https://jesunahmadushno.github.io/distributed-training-lab/"
+license: Apache-2.0
+date-released: 2026-11-07

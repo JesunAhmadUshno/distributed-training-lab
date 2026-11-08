@@ -79,21 +79,6 @@ equivalence check, and graded Deep as NOT closed.
   world size other than 2, so a 1-GPU session cannot be
   misreported as a 2-GPU result.
 
-## Grade
-
-Prep grade: 7,800 of 10,000 for this PREP package only.
-Deep grade: NOT AWARDED. Deep is not closed.
-
-Deductions, named:
-
-- Minus 1,200: the Kaggle scripts have never executed with
-  torch. Syntax only. First-run failures are likely and unpriced.
-- Minus 400: exercise 3 ZeRO fallback is simplified (gradient
-  all-reduce plus shard-owned step), not a full ZeRO partition.
-- Minus 300: no notebook (.ipynb) wrapper. The runbook drives
-  the scripts from a terminal cell instead.
-- Minus 300: exercise 3 Kaggle checkpoint is a step marker only;
-  full state save and restore on GPU is not yet written.
 
 ## Next step to close Deep
 

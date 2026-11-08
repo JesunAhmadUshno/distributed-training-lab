@@ -12,10 +12,10 @@ tests:
       - any-glob-to-any-file: ["tests/**"]
 fanout:
   - changed-files:
-      - any-glob-to-any-file: ["fanout/**", "PUBLICITY.md"]
+      - any-glob-to-any-file: ["fanout/**"]
 automation:
   - changed-files:
       - any-glob-to-any-file: [".github/**", "ruff.toml"]
 docs:
   - changed-files:
-      - any-glob-to-any-file: ["docs/**", "README.md", "DOSSIER.md"]
+      - any-glob-to-any-file: ["docs/**", "README.md", "PROPOSAL.md", "REPORT.md", "CHANGELOG.md"]

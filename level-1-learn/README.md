@@ -165,23 +165,9 @@ times 20 steps = 480 bytes.
   gradients. The P01 GPT, minibatching, and optimizers beyond
   plain gradient descent are later level scope.
 - This level was run on the Muse VM (CPU), not on the fleet
-  node BlackBox (GPU). That costs a grade deduction, named in
-  the grade. The TensorFlow MirroredStrategy bridge run from
+  node BlackBox (GPU). The TensorFlow MirroredStrategy bridge run from
   the SPEC is deferred to Build and Deep, not done here.
 
-## Grade
-
-Grade: 8,400 of 10,000 for this Learn level.
-
-Deductions (they sum to 1,600):
-- Simulated ranks in one process, not real DDP and no GPU:
-  minus 700.
-- Tiny synthetic dataset (8 examples) and a 3-parameter linear
-  model only: minus 400.
-- Single-process sequential execution: no real communication,
-  no processes, and no scaling behaviour measured: minus 300.
-- Run on the Muse VM, not the assigned BlackBox GPU fleet
-  node: minus 200.
 
 ## What Build adds next
 

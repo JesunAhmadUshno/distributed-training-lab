@@ -21,8 +21,8 @@ wall time, or throughput, and no GPU number is claimed anywhere.
 NEEDS-BLACKBOX-ON: the assigned fleet node BlackBox (RTX 5050)
 was checked once by SSH at the start of this cycle and was
 unreachable (connection closed, exit 255), so this Build ran as
-the CPU sharding emulation on the Muse VM and carries the named
-grade deduction for that below. The NCCL interconnect bandwidth
+the CPU sharding emulation on the Muse VM, a limit stated in
+the scope notes below. The NCCL interconnect bandwidth
 measurement named in the SPEC (register item 542) needs real GPU
 hardware and is not done here; it stays Deep and v1.1 scope. The
 TensorFlow MirroredStrategy bridge run named in the SPEC also
@@ -179,22 +179,6 @@ exactly and the restarted run repeats the same arithmetic.
   vectors per parameter) would triple the partitioned optimizer
   storage and is named here as unbuilt, not approximated.
 
-## Grade
-
-Grade: 8,300 of 10,000 for this Build level.
-
-Deductions (they sum to 1,700):
-- Simulated ranks in one process, not real FSDP or DeepSpeed
-  libraries and no GPU execution: minus 700.
-- Tiny synthetic dataset (16 examples) and a small
-  31-parameter model only: minus 350.
-- Both strategies yield identical math and identical results
-  in this emulation, so no real performance or scaling
-  difference between them is measured: minus 250.
-- Communication and memory are logical accounting only, with
-  no measured transfer, bandwidth, or memory figure: minus 200.
-- Run on the Muse VM (CPU), not the assigned BlackBox GPU
-  fleet node (NEEDS-BLACKBOX-ON): minus 200.
 
 ## What Deep adds next
 
