@@ -107,7 +107,7 @@ function Lines({ series, label, lo, hi, log = false, ticks, xLabel, W = 460, H =
 export default function App() {
   useReveal();
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -122,14 +122,14 @@ export default function App() {
       <Dock />
       <footer>
         Code: Apache-2.0. Recorded numbers on this page are read from <code>level-*/results*.json</code> at build time. The trainers run in your browser as JavaScript ports of the repo’s Python, checked against those files before every build.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
 
 function Hero() {
   return (
-    <header className="card hero window" id="top" data-title="distributed-training-lab — README.md">
+    <header className="card hero window" id="top" data-title="distributed-training-lab - README.md">
       <div className="head">
         <p className="eyebrow">Learn · Build · Deep</p>
         <span className="pill good">● Deep: {HPASS} of 7 pre-registered hypotheses pass, two GB10 nodes over 1 GbE</span>
@@ -172,7 +172,7 @@ function Learn() {
   const maxDiff = Math.max(...diffs);
   const diffHi = maxDiff > 1e-6 ? 10 : 1e-14;
   return (
-    <section id="learn" className="card window reveal" data-title="data_parallel.py — live trainer">
+    <section id="learn" className="card window reveal" data-title="data_parallel.py - live trainer">
       <div className="head">
         <div>
           <p className="eyebrow">Learn · data parallel, computed live</p>
@@ -224,7 +224,7 @@ function Imbalance() {
   const W = 460, H = 220, pad = { l: 40, r: 10, t: 10, b: 26 }, gw = (W - pad.l - pad.r) / 3, bw = gw / 4.5;
   const y = (v) => pad.t + ((lim - v) / (2 * lim)) * (H - pad.t - pad.b);
   return (
-    <section id="imbalance" className="card window reveal" data-title="imbalance_experiment.json — split explorer">
+    <section id="imbalance" className="card window reveal" data-title="imbalance_experiment.json - split explorer">
       <div className="head">
         <div>
           <p className="eyebrow">Shard imbalance, computed live</p>
@@ -287,7 +287,7 @@ function Build() {
   const done = trainer.step >= FS.steps;
   const curLoss = trainer.losses.at(-1);
   return (
-    <section id="build" className="card window reveal" data-title="sharding.py — 31 parameters across ranks">
+    <section id="build" className="card window reveal" data-title="sharding.py - 31 parameters across ranks">
       <div className="head">
         <div>
           <p className="eyebrow">Build · sharded training, computed live</p>
@@ -337,7 +337,7 @@ function Restart() {
   const rec = strategy === 'fsdp' ? FS : ZS;
   const resumed = r.straight.losses.map((v, i) => (i < ck ? null : r.resumedLosses[i - ck]));
   return (
-    <section id="restart" className="card window reveal" data-title={`ckpt_step${ck}.json — save and restart`}>
+    <section id="restart" className="card window reveal" data-title={`ckpt_step${ck}.json - save and restart`}>
       <div className="head">
         <div>
           <p className="eyebrow">Checkpoint and restart, computed live</p>
@@ -378,7 +378,7 @@ function Accounting() {
   const stages = [['DDP (everything replicated)', a.stage.ddp], ['ZeRO-1 (velocity sharded)', a.stage.zero1], ['ZeRO-2 (+ gradients sharded)', a.stage.zero2], ['ZeRO-3 / FSDP, persistent', a.stage.zero3_fsdp_persistent], ['ZeRO-3 / FSDP, peak with gathered copy', a.stage.zero3_fsdp_peak]];
   const pid = useId();
   return (
-    <section id="accounting" className="card window reveal" data-title="accounting.py — communication and memory">
+    <section id="accounting" className="card window reveal" data-title="accounting.py - communication and memory">
       <div className="head">
         <div>
           <p className="eyebrow">Communication and memory, computed from the repo’s formulas</p>
@@ -436,7 +436,7 @@ function Scaling() {
   const y = (v) => pad.t + (1 - (Math.log10(Math.max(lo, v)) - Math.log10(lo)) / (Math.log10(hi) - Math.log10(lo))) * (H - pad.t - pad.b);
   const bw = (W - pad.l - pad.r) / rs.length;
   return (
-    <section id="scaling" className="card window reveal" data-title="results_sweep.json — rank sweep and ring all-reduce">
+    <section id="scaling" className="card window reveal" data-title="results_sweep.json - rank sweep and ring all-reduce">
       <div className="head">
         <div>
           <p className="eyebrow">Scaling the rank count · recorded CPU runs</p>
@@ -502,7 +502,7 @@ function Deep() {
     ['H7', 'Hard crash at step 13, 25 or 37 resumes bit-identical', `${H.H7.matches_clean.filter(Boolean).length} of ${H.H7.fault_steps.length} crash points match the clean hash`],
   ];
   return (
-    <section id="deep" className="card window reveal" data-title="PREREG.md — two DGX Spark nodes over 1 GbE">
+    <section id="deep" className="card window reveal" data-title="PREREG.md - two DGX Spark nodes over 1 GbE">
       <div className="head">
         <div>
           <p className="eyebrow">Deep · measured, pre-registered</p>
@@ -556,7 +556,7 @@ function Method() {
     'Prior-art comparison is still a draft; see PROPOSAL.md and REPORT.md.',
   ];
   return (
-    <section id="method" className="card window reveal" data-title="PROPOSAL.md — what was asked, what was done">
+    <section id="method" className="card window reveal" data-title="PROPOSAL.md - what was asked, what was done">
       <p className="eyebrow">Method and limits</p>
       <h2>What the spec asked for, against <em>what actually ran</em>.</h2>
       <div style={{ overflowX: 'auto', marginTop: 16 }}>
