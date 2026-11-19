@@ -1,0 +1,336 @@
+{
+ "cells": {
+  "L-1": {
+   "committed_loss_last_mean": 6.601244290669759,
+   "committed_measured_t_ddp": 3.1886749267578125,
+   "committed_peak_mib": 3019.7763671875,
+   "committed_t_single": 0.218467116355896,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.21461881697177887,
+    0.21615863343079886
+   ],
+   "fresh_loss_last_mean": 6.601244290669759,
+   "fresh_peak_mib": 3019.7763671875,
+   "fresh_t_single": 0.21550302704175314,
+   "h3_rel_error": 0.01339216658407291,
+   "recomputed_pred_t_ddp": 3.2313781925594096,
+   "rel_diff_vs_committed": -0.013567668048101916
+  },
+  "L-16": {
+   "committed_loss_last_mean": 5.5212249755859375,
+   "committed_measured_t_ddp": 4.576135476430257,
+   "committed_peak_mib": 3019.7763671875,
+   "committed_t_single": 2.971126159032186,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    2.984215497970581,
+    3.3046299616495767
+   ],
+   "fresh_loss_last_mean": 5.5212249755859375,
+   "fresh_peak_mib": 3019.7763671875,
+   "fresh_t_single": 3.0012528896331787,
+   "h3_rel_error": 0.010514908851081842,
+   "recomputed_pred_t_ddp": 4.624253123855123,
+   "rel_diff_vs_committed": 0.01013983553320609
+  },
+  "L-4": {
+   "committed_loss_last_mean": 5.871055285135905,
+   "committed_measured_t_ddp": 3.4630523522694907,
+   "committed_peak_mib": 3019.7763671875,
+   "committed_t_single": 0.8680871327718099,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.7666424681742986,
+    0.829312264919281
+   ],
+   "fresh_loss_last_mean": 5.871055285135905,
+   "fresh_peak_mib": 3019.7763671875,
+   "fresh_t_single": 0.8071018060048422,
+   "h3_rel_error": 0.0185169680526023,
+   "recomputed_pred_t_ddp": 3.527177582040954,
+   "rel_diff_vs_committed": -0.07025254086216101
+  },
+  "L-64": {
+   "committed_loss_last_mean": 5.4241766929626465,
+   "committed_measured_t_ddp": 9.009527842203775,
+   "committed_peak_mib": 3019.7763671875,
+   "committed_t_single": 11.839842478434244,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    11.874586741129557,
+    12.279526074727377
+   ],
+   "fresh_loss_last_mean": 5.4241766929626465,
+   "fresh_peak_mib": 3019.7763671875,
+   "fresh_t_single": 11.888258934020996,
+   "h3_rel_error": 0.006462969521276634,
+   "recomputed_pred_t_ddp": 9.067756146049032,
+   "rel_diff_vs_committed": 0.0040892820723705025
+  },
+  "M-1": {
+   "committed_loss_last_mean": 7.5998884836832685,
+   "committed_measured_t_ddp": 1.0316017866134644,
+   "committed_peak_mib": 1271.6279296875,
+   "committed_t_single": 0.07972036302089691,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.07884341782579819,
+    0.08019882726172606
+   ],
+   "fresh_loss_last_mean": 7.5998884836832685,
+   "fresh_peak_mib": 1271.6279296875,
+   "fresh_t_single": 0.07954482237497966,
+   "h3_rel_error": 0.015993790515139175,
+   "recomputed_pred_t_ddp": 1.0481010094836034,
+   "rel_diff_vs_committed": -0.002201954924254898
+  },
+  "M-16": {
+   "committed_loss_last_mean": 7.010387897491455,
+   "committed_measured_t_ddp": 1.5577135880788167,
+   "committed_peak_mib": 1271.6279296875,
+   "committed_t_single": 1.1170144081115723,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    1.1214969555536907,
+    1.2264554897944133
+   ],
+   "fresh_loss_last_mean": 7.010387897491455,
+   "fresh_peak_mib": 1271.6279296875,
+   "fresh_t_single": 1.123884876569112,
+   "h3_rel_error": 0.008061461746212579,
+   "recomputed_pred_t_ddp": 1.5702710365806696,
+   "rel_diff_vs_committed": 0.006150742915800912
+  },
+  "M-4": {
+   "committed_loss_last_mean": 7.23825216293335,
+   "committed_measured_t_ddp": 1.1371087630589802,
+   "committed_peak_mib": 1271.6279296875,
+   "committed_t_single": 0.2862406571706136,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.28576446572939557,
+    0.2880502939224243
+   ],
+   "fresh_loss_last_mean": 7.23825216293335,
+   "fresh_peak_mib": 1271.6279296875,
+   "fresh_t_single": 0.2870256304740906,
+   "h3_rel_error": 0.01295623686387381,
+   "recomputed_pred_t_ddp": 1.151841413533159,
+   "rel_diff_vs_committed": 0.002742354322534639
+  },
+  "M-64": {
+   "committed_loss_last_mean": 6.915117422739665,
+   "committed_measured_t_ddp": 3.235158363978068,
+   "committed_peak_mib": 1271.6279296875,
+   "committed_t_single": 4.419052441914876,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    4.443432331085205,
+    4.580671310424805
+   ],
+   "fresh_loss_last_mean": 6.915117422739665,
+   "fresh_peak_mib": 1271.6279296875,
+   "fresh_t_single": 4.450477600097656,
+   "h3_rel_error": -0.0004917736488082759,
+   "recomputed_pred_t_ddp": 3.233567398344942,
+   "rel_diff_vs_committed": 0.007111288810404569
+  },
+  "S-1": {
+   "committed_loss_last_mean": 7.971807479858398,
+   "committed_measured_t_ddp": 0.18876687437295914,
+   "committed_peak_mib": 405.6357421875,
+   "committed_t_single": 0.018902569077908993,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.01890656320222964,
+    0.019506645272485912
+   ],
+   "fresh_loss_last_mean": 7.971807479858398,
+   "fresh_peak_mib": 405.6357421875,
+   "fresh_t_single": 0.01917554313937823,
+   "h3_rel_error": 0.013232192897404144,
+   "recomputed_pred_t_ddp": 0.1912646740673022,
+   "rel_diff_vs_committed": 0.01444110905476107
+  },
+  "S-16": {
+   "committed_loss_last_mean": 7.631880919138591,
+   "committed_measured_t_ddp": 0.33064868052800495,
+   "committed_peak_mib": 405.6357421875,
+   "committed_t_single": 0.2807331830263138,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.27619974315166473,
+    0.27672609662016234
+   ],
+   "fresh_loss_last_mean": 7.631880919138591,
+   "fresh_peak_mib": 405.6357421875,
+   "fresh_t_single": 0.2764405955870946,
+   "h3_rel_error": -0.03251632584674404,
+   "recomputed_pred_t_ddp": 0.31989720029116037,
+   "rel_diff_vs_committed": -0.015290630743914662
+  },
+  "S-4": {
+   "committed_loss_last_mean": 7.7492367426554365,
+   "committed_measured_t_ddp": 0.2148799846569697,
+   "committed_peak_mib": 405.6357421875,
+   "committed_t_single": 0.07031174624959628,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    0.07739536417648196,
+    0.0798789832741022
+   ],
+   "fresh_loss_last_mean": 7.7492367426554365,
+   "fresh_peak_mib": 405.6357421875,
+   "fresh_t_single": 0.07928167780240376,
+   "h3_rel_error": 0.02995977848808186,
+   "recomputed_pred_t_ddp": 0.22131774139881494,
+   "rel_diff_vs_committed": 0.12757372745324164
+  },
+  "S-64": {
+   "committed_loss_last_mean": 7.585824807484944,
+   "committed_measured_t_ddp": 0.7519188125928243,
+   "committed_peak_mib": 405.6357421875,
+   "committed_t_single": 1.1048108140627544,
+   "env": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GB10",
+    "hosts": [
+     "spark-6aa3"
+    ],
+    "link": "enP7s7 1000 Mb/s",
+    "nccl": "2.29.7",
+    "torch": "2.12.0+cu130"
+   },
+   "fresh_ci": [
+    1.0985051562388737,
+    1.108203610777855
+   ],
+   "fresh_loss_last_mean": 7.585824807484944,
+   "fresh_peak_mib": 405.6357421875,
+   "fresh_t_single": 1.1012179255485535,
+   "h3_rel_error": -0.026110461651085347,
+   "recomputed_pred_t_ddp": 0.7322858652718898,
+   "rel_diff_vs_committed": -0.003252039596705867
+  }
+ },
+ "committed_h3_max_abs_rel_error": 0.027322108801774252,
+ "committed_h4_sides": "12/12",
+ "h3_max_abs_rel_error": 0.03251632584674404,
+ "h3_within_25pct_all": true,
+ "h4_cells": 12,
+ "h4_sides_correct": 12,
+ "link_fit_used": {
+  "alpha_ci": [
+   0.00035965241784430556,
+   0.0004351911492593608
+  ],
+  "alpha_s": 0.00039636298013562277,
+  "beta_MBps": 117.43654369446263,
+  "beta_ci": [
+   117.42951290540421,
+   117.4432509899123
+  ],
+  "n_trials": 126,
+  "r2": 0.9999997938443766
+ }
+}

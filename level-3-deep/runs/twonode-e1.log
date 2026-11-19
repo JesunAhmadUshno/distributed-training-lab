@@ -1,0 +1,4 @@
+E1 ddp launch 1 rc=0
+E1 ddp launch 2 rc=0
+E1 fsdp launch 1 rc=0
+STAGE DONE: e1

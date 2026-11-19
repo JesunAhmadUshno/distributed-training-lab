@@ -1,0 +1,109 @@
+{
+ "H1": {
+  "ddp_distinct_hashes": 1,
+  "ddp_launches": 2,
+  "max_param_diff": {
+   "ddp": 0.0,
+   "fsdp": 0.0
+  },
+  "pass": true
+ },
+ "H2": {
+  "beta_MBps": 117.42974073205778,
+  "pass": true,
+  "r2": 0.9999999243248859
+ },
+ "H3": {
+  "max_abs_rel_error": 0.028576347564241187,
+  "pass": true,
+  "rel_error": {
+   "L-1": 0.012737788939730151,
+   "L-16": 0.004465221852923765,
+   "L-4": 0.013889572647440103,
+   "L-64": -0.002035011988293005,
+   "M-1": 0.011796594903387685,
+   "M-16": 0.008012249797527347,
+   "M-4": 0.012703163261248299,
+   "M-64": -0.000870843073434821,
+   "S-1": 0.01627236149581148,
+   "S-16": -0.014329545845001606,
+   "S-4": 0.028576347564241187,
+   "S-64": -0.022302649817351604
+  }
+ },
+ "H4": {
+  "cells": 12,
+  "largest_model_accum1_speedup": 0.06757210226014028,
+  "pass": true,
+  "side_correct": 12
+ },
+ "H5": {
+  "cells": {
+   "L-1": {
+    "cut": 0.4846297677462216,
+    "loss_rel_diff": 1.426915561011235e-07
+   },
+   "L-16": {
+    "cut": 0.3392745236641147,
+    "loss_rel_diff": 1.9323927311306145e-06
+   },
+   "L-4": {
+    "cut": 0.44681238372966936,
+    "loss_rel_diff": 1.0278121365554816e-06
+   },
+   "M-1": {
+    "cut": 0.4883128505334058,
+    "loss_rel_diff": 4.162837029662868e-07
+   },
+   "M-16": {
+    "cut": 0.3185776461183213,
+    "loss_rel_diff": 1.8161614219992928e-07
+   },
+   "M-4": {
+    "cut": 0.43834785990637537,
+    "loss_rel_diff": 4.394272781991591e-08
+   },
+   "S-1": {
+    "cut": 0.4802210992150576,
+    "loss_rel_diff": 3.9860168929264096e-07
+   },
+   "S-16": {
+    "cut": 0.27935416338684826,
+    "loss_rel_diff": 1.665304412575287e-07
+   },
+   "S-4": {
+    "cut": 0.40147316003012967,
+    "loss_rel_diff": 2.2559397711122186e-07
+   }
+  },
+  "pass": false
+ },
+ "H6": {
+  "ddp_peak_mib": 3012.2763671875,
+  "fsdp_peak_mib": 2195.53173828125,
+  "pass": false,
+  "ratio": 0.7288613230170419
+ },
+ "H7": {
+  "clean_hashes": 1,
+  "fault_steps": [
+   13,
+   25,
+   37
+  ],
+  "matches_clean": [
+   true,
+   true,
+   true
+  ],
+  "pass": true,
+  "restarted": true
+ },
+ "cross_checks": {
+  "h1_pass_explicit": true,
+  "h2_pass_explicit": true,
+  "h7_pass_explicit": true
+ },
+ "decision": "0005",
+ "source": "analysis.report on combined fresh rows (E1/E2 2026-11-17, single-node E3 2026-11-17, two-node E3 and E4 2026-11-19), predictions from analysis.predict on the same rows"
+}

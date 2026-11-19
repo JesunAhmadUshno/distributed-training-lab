@@ -1,0 +1,20 @@
+rep 0 ddp_bf16 S k=16 rc=0
+rep 0 ddp S k=1 rc=0
+rep 0 ddp_bf16 L k=64 rc=0
+rep 0 ddp_bf16 M k=16 rc=0
+rep 0 ddp M k=16 rc=0
+rep 0 ddp M k=4 rc=0
+rep 0 ddp M k=64 rc=0
+rep 0 ddp L k=16 rc=0
+rep 0 ddp_bf16 L k=16 rc=0
+rep 0 ddp_bf16 L k=1 rc=0
+rep 0 ddp M k=1 rc=0
+rep 0 ddp S k=16 rc=0
+rep 0 ddp_bf16 L k=4 rc=0
+rep 0 ddp_bf16 M k=4 rc=0
+rep 0 ddp L k=64 rc=-9
+ TIMEOUT after 1200s; peer workers pkilled
+rep 0 ddp_bf16 M k=64 rc=-9
+ TIMEOUT after 1200s; peer workers pkilled
+rep 0 ddp L k=4 rc=-9
+ TIMEOUT after 1200s; peer workers pkilled

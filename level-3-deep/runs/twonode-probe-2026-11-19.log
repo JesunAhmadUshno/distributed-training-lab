@@ -1,0 +1,6 @@
+probe ddp L k=1 rc=0
+probe ddp S k=64 rc=0
+PROBE ddp-L-1: fresh rep-median 3.1888s committed cell 3.1887s rel +0.00%
+PROBE ddp-S-64: fresh rep-median 0.7485s committed cell 0.7519s rel -0.46%
+PROBE VERDICT: WITHIN 10% - grid to record file
+STAGE DONE: probe
